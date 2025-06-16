@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <string.h>
 
-// Struct untuk class
+// Struct class
 typedef struct {
     char name[20];
     int healthBonus;
@@ -9,14 +9,15 @@ typedef struct {
     int agilityBonus;
 } Class;
 
-// Struct untuk gender
+// Struct gender
 typedef struct {
     char name[10];
+    int healthBonus;
     int strengthBonus;
     int agilityBonus;
 } Gender;
 
-// Struct untuk karakter
+// Struct karakter
 typedef struct {
     char name[50];
     Gender gender;
