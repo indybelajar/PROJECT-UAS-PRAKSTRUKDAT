@@ -150,7 +150,7 @@ int main() {
     char mulai;
 
     printf("=========================\n");
-    printf("Game Sederhana Berbasis Teks\n");
+    printf("Game Otome Berbasis Teks\n");
     printf("Creator:\n");
     printf("- Indy Agustin\n");
     printf("- Grace Larisma Jaya\n");
