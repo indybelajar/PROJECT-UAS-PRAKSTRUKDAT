@@ -1,7 +1,8 @@
 #include <stdio.h>
 #include <string.h>
-
-// Struct class
+// FaatihKorkmaz
+// Rakha Atha Muhammad
+// Struct class Kurnia
 typedef struct {
     char name[20];
     int healthBonus;
