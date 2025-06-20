@@ -1,118 +1,154 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
-// FaatihKorkmaz
-// Rakha Atha Muhammad
-// Struct class Kurnia
-typedef struct {
-    char name[20];
-    int healthBonus;
-    int strengthBonus;
-    int agilityBonus;
-} Class;
 
-// Struct gender
-typedef struct {
-    char name[10];
-    int healthBonus;
-    int strengthBonus;
-    int agilityBonus;
-} Gender;
+// Struct untuk item inventory
+typedef struct Item {
+    char name[50];
+    struct Item* next;
+} Item;
 
 // Struct karakter
 typedef struct {
     char name[50];
-    Gender gender;
-    Class class;
-    int health;
-    int strength;
-    int agility;
+    char birthdate[15];
+    int affinity;
 } Character;
 
-// Tampilkan status karakter
-void tampilkanStatus(Character player) {
-    printf("\n=== Status Karakter ===\n");
-    printf("Nama     : %s\n", player.name);
-    printf("Gender   : %s\n", player.gender.name);
-    printf("Class    : %s\n", player.class.name);
-    printf("Health   : %d\n", player.health);
-    printf("Strength : %d\n", player.strength);
-    printf("Agility  : %d\n", player.agility);
+// Struct untuk chapter/hari
+typedef struct Chapter {
+    int day;
+    char scene[200];
+    struct Chapter* next;
+} Chapter;
+
+// Variabel global
+Item* inventory = NULL;
+Character senpai = {"Raka", "20 April", 0};
+Chapter* head = NULL;
+
+// Tambah item ke inventory
+void addItem(char name[]) {
+    Item* newItem = (Item*)malloc(sizeof(Item));
+    strcpy(newItem->name, name);
+    newItem->next = inventory;
+    inventory = newItem;
+    printf("Item '%s' ditambahkan ke inventory.\n", name);
 }
 
-// Tampilkan daftar item
-void tampilkanItem() {
-    printf("\n=== Daftar Item ===\n");
-    printf("- Sword\n");
-    printf("- Shield\n");
-    printf("- Armor\n");
-    printf("- Dagger\n");
-    printf("- Spear\n");
+// Hapus item dari inventory (pakai item)
+void useItem(char name[]) {
+    Item *temp = inventory, *prev = NULL;
+    while (temp != NULL && strcmp(temp->name, name) != 0) {
+        prev = temp;
+        temp = temp->next;
+    }
+    if (temp == NULL) {
+        printf("Item tidak ditemukan.\n");
+        return;
+    }
+    if (prev == NULL) {
+        inventory = temp->next;
+    } else {
+        prev->next = temp->next;
+    }
+    free(temp);
+    printf("Item '%s' telah digunakan.\n", name);
 }
 
-// Buat karakter
-Character createCharacter(Class classList[], int classCount, Gender genderList[], int genderCount) {
-    Character player;
-    player.health = 100;
-    player.strength = 10;
-    player.agility = 10;
-
-    printf("\n=== Create Your Character ===\n");
-    printf("Nama: ");
-    scanf(" %[^\n]%*c", player.name);
-
-    // Pilih gender
-    printf("\nPilih Gender:\n");
-    for (int i = 0; i < genderCount; i++) {
-        printf("%d. %s (Strength +%d, Agility +%d)\n",
-               i + 1,
-               genderList[i].name,
-               genderList[i].strengthBonus,
-               genderList[i].agilityBonus);
+// Tampilkan inventory
+void showInventory() {
+    printf("\nInventory:\n");
+    Item* temp = inventory;
+    while (temp != NULL) {
+        printf("- %s\n", temp->name);
+        temp = temp->next;
     }
-    printf("Pilihan Anda: ");
-    int genderChoice;
-    scanf("%d", &genderChoice);
+}
 
-    if (genderChoice < 1 || genderChoice > genderCount) {
-        printf("Pilihan tidak valid. Default Male.\n");
-        player.gender = genderList[0];
+// Tambah chapter ke linked list
+void addChapter(int day, char* scene) {
+    Chapter* newChap = (Chapter*)malloc(sizeof(Chapter));
+    newChap->day = day;
+    strcpy(newChap->scene, scene);
+    newChap->next = NULL;
+
+    if (head == NULL) {
+        head = newChap;
     } else {
-        player.gender = genderList[genderChoice - 1];
+        Chapter* temp = head;
+        while (temp->next != NULL)
+            temp = temp->next;
+        temp->next = newChap;
     }
+}
 
-    player.strength += player.gender.strengthBonus;
-    player.agility += player.gender.agilityBonus;
-
-    // Pilih class
-    printf("\nPilih Class:\n");
-    for (int i = 0; i < classCount; i++) {
-        printf("%d. %s (Health +%d, Strength +%d, Agility +%d)\n",
-               i + 1,
-               classList[i].name,
-               classList[i].healthBonus,
-               classList[i].strengthBonus,
-               classList[i].agilityBonus);
-    }
-    printf("Pilihan Anda: ");
-    int classChoice;
-    scanf("%d", &classChoice);
-
-    if (classChoice < 1 || classChoice > classCount) {
-        printf("Pilihan tidak valid. Default Barbarian.\n");
-        player.class = classList[0];
+// Cari karakter
+void searchCharacter(char* keyword) {
+    if (strstr(senpai.name, keyword) || strstr(senpai.birthdate, keyword)) {
+        printf("Karakter ditemukan:\nNama: %s\nLahir: %s\nAfinitas: %d\n", senpai.name, senpai.birthdate, senpai.affinity);
     } else {
-        player.class = classList[classChoice - 1];
+        printf("Karakter tidak ditemukan.\n");
     }
+}
 
-    player.health += player.class.healthBonus;
-    player.strength += player.class.strengthBonus;
-    player.agility += player.class.agilityBonus;
+// Main game logic
+void playGame() {
+    Chapter* current = head;
+    int choice;
+    while (current != NULL) {
+        printf("\nHari %d:\n%s\n", current->day, current->scene);
 
-    return player;
+        if (current->day == 3) {
+            printf("Pilihanmu saat senpai cerita tentang cewek lain:\n");
+            printf("1. Marah\n2. Sedih\n3. Dengerin sampe habis\n> ");
+            scanf("%d", &choice);
+            if (choice == 1) {
+                senpai.affinity -= 2;
+                printf("Kamu marah... afinitas menurun!\n");
+            } else if (choice == 2) {
+                senpai.affinity += 1;
+                printf("Kamu sedih... afinitas naik sedikit.\n");
+            } else if (choice == 3) {
+                senpai.affinity += 2;
+                printf("Kamu mendengarkan dengan sabar... afinitas meningkat!\n");
+            }
+        }
+
+        if (current->day == 5) {
+            printf("\nGunakan item untuk menarik perhatian senpai?\n1. Cokelat\n2. Tidak\n> ");
+            scanf("%d", &choice);
+            if (choice == 1) {
+                useItem("Cokelat");
+                senpai.affinity += 2;
+                printf("Senpai tersenyum menerima cokelatmu. Afinitas meningkat!\n");
+            }
+        }
+
+        if (current->day == 7) {
+            printf("Senpai terlihat heran kamu tidak ngobrol lagi...\n");
+            printf("Apakah kamu ingin menyatakan cinta saat kelulusan?\n1. Ya\n2. Tidak\n> ");
+            scanf("%d", &choice);
+            if (choice == 1) {
+                if (senpai.affinity >= 5) {
+                    printf("\nSenpai menerima cintamu! ❤️ Ending Bahagia!\n");
+                } else {
+                    printf("\nSenpai menolakmu dengan halus... Ending Sedih 😢\n");
+                }
+                return;
+            } else {
+                printf("\nKamu menyimpan perasaanmu sendiri... Ending Netral.\n");
+                return;
+            }
+        }
+
+        current = current->next;
+    }
 }
 
 int main() {
     char mulai;
+
     printf("=========================\n");
     printf("Game Sederhana Berbasis Teks\n");
     printf("Creator:\n");
@@ -121,33 +157,37 @@ int main() {
     printf("- Rakha Atha Muhammad\n");
     printf("- Muhammad Mumtaaz Raihaan Thaariq\n");
     printf("- Muhammad Faatih Yusron\n");
+    printf("=========================\n");
     printf("\nMulai Permainan? (Y/N): ");
     scanf(" %c", &mulai);
 
-    if (mulai == 'Y' || mulai == 'y') {
-        // Daftar class
-        Class classList[] = {
-            {"Barbarian", 10, 5, 0},
-            {"Thief", 0, 0, 15},
-            {"Knight", 20, 3, 0},
-            {"Archer", 0, 2, 10}
-        };
-        int classCount = sizeof(classList) / sizeof(classList[0]);
-
-        // Daftar gender
-        Gender genderList[] = {
-            {"Male", 5, 0},
-            {"Female", 0, 5}
-        };
-        int genderCount = sizeof(genderList) / sizeof(genderList[0]);
-
-        Character player = createCharacter(classList, classCount, genderList, genderCount);
-        tampilkanStatus(player);
-        tampilkanItem();
-        printf("\nPetualangan dimulai!\n");
-    } else {
-        printf("\nPermainan dibatalkan.\n");
+    if (mulai != 'Y' && mulai != 'y') {
+        printf("Permainan dibatalkan. Terima kasih!\n");
+        return 0;
     }
+
+    // Tambah cerita
+    addChapter(1, "Kamu bertemu senpai di ospek. Kesan pertama baik.");
+    addChapter(2, "Kalian mulai terbuka satu sama lain.");
+    addChapter(3, "Senpai cerita dia suka orang lain. Kamu merasa aneh...");
+    addChapter(4, "Kamu ngedown dan menghindari senpai.");
+    addChapter(5, "Kamu bangkit dan ingin perjuangkan senpai.");
+    addChapter(6, "Senpai cerita bahwa orang yang dia suka kuliah di kampus yang sama.");
+    addChapter(7, "Hari terakhir ospek. Apakah kamu akan menyatakan cinta?");
+
+    // Tambah item ke inventory
+    addItem("Surat cinta");
+    addItem("Cokelat");
+    showInventory();
+
+    // Main game
+    playGame();
+
+    // Fitur pencarian karakter
+    printf("\n\nCari karakter berdasarkan nama/tanggal lahir:\nKetik keyword: ");
+    char keyword[50];
+    scanf("%s", keyword);
+    searchCharacter(keyword);
 
     return 0;
 }
