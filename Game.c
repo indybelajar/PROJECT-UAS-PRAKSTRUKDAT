@@ -3,7 +3,7 @@
 #include <string.h>
 #include <windows.h>
 
-// Struct untuk item inventory
+// Struct inventory
 typedef struct Item {
     char name[50];
     struct Item* next;
@@ -30,6 +30,7 @@ Chapter* head = NULL;
 Chapter* currentChapter = NULL;
 int isPaused = 0;
 int delay = 5;
+int delay2 = 2;
 
 // Deklarasi awal fungsi chapter
 void playChapter1();
@@ -113,10 +114,10 @@ void listCharacters() {
 
 int gameMenu() {
     int choice;
-    printf("\n=== MENU PAUSE ===\n");
-    printf("1. Lanjutkan permainan\n");
-    printf("2. Buka inventory\n");
-    printf("3. Keluar permainan\n> ");
+    typewriterEffect("\n=== MENU PAUSE ===\n", delay2);
+    typewriterEffect("1. Lanjutkan permainan\n", delay2);
+    typewriterEffect("2. Buka inventory\n", delay2);
+    typewriterEffect("3. Keluar permainan\n> ", delay2);
     scanf("%d", &choice);
     clearInputBuffer();
     switch (choice) {
@@ -127,15 +128,17 @@ int gameMenu() {
             showInventory();
             return gameMenu();
         case 3:
+            typewriterEffect("Terimakasih telah bermain:)\n", delay2);
             exit(0);
         default:
-            printf("Pilihan tidak valid.\n");
+            typewriterEffect("Pilihan tidak valid.\n", delay2);
             return gameMenu();
     }
 }
 
 void jumpToChapter(int targetChapter) {
     Chapter* current = head;
+    char fullText[600];
     while (current != NULL) {
         if (current->chapterNumber == targetChapter) {
             currentChapter = current;
@@ -149,9 +152,10 @@ void jumpToChapter(int targetChapter) {
     }
 
     while (currentChapter != NULL) {
-        printf("\n=================\n");
-        printf("Chapter %d:\n%s\n", currentChapter->chapterNumber, currentChapter->scene);
-        printf("=================\n");
+        typewriterEffect("\n=================\n", delay2);
+        snprintf(fullText, sizeof(fullText), "Chapter %d:\n%s\n", currentChapter->chapterNumber, currentChapter->scene);
+        typewriterEffect(fullText, delay2);
+        typewriterEffect("=================\n", delay2);
 
         switch (currentChapter->chapterNumber) {
             case 1: playChapter1(); break;
@@ -167,23 +171,59 @@ void jumpToChapter(int targetChapter) {
 
 void playChapter1() {
     int choice;
-    printf("MC: Ah, indahnya hari ini.\n(Kakak kelas datang)\nMC: (Apa yang harus aku lakukan?)\n");
-    printf("1. Ucapkan salam\n2. Abaikan saja\n0. Menu\n> ");
+    typewriterEffect("\nHari 1: Pendekatan Awal\n", delay);
+    typewriterEffect("(Latar: Aula OSIS, siang hari)\n", delay);
+    typewriterEffect("(Narasi Rima): Hari pertama dari sisa 7 hari ini dimulai. Aku melihat Thallah sedang membereskan berkas-berkas sendirian di aula OSIS. Dia tampak sedikit lelah. Ini kesempatanku!\n", delay);
+    typewriterEffect("Rima: (Berjalan mendekat) \"Kak Thallah, butuh bantuan?\"\n", delay);
+
+    typewriterEffect("\nApa yang akan kamu lakukan?\n", delay);
+    typewriterEffect("1. Tawarkan bantuan spesifik\n", delay);
+    typewriterEffect("2. Tawarkan minuman\n", delay);
+    typewriterEffect("3. Hanya bertanya\n", delay);
+    typewriterEffect("0. Menu\n> ", delay);
     scanf("%d", &choice);
     clearInputBuffer();
+
     if (choice == 0) {
         if (!gameMenu()) return;
         playChapter1();
         return;
     }
-    if (choice == 1) {
-        senpai.affinity += 1;
-        printf("Senpai membalas dengan senyuman. Afinitas meningkat!\n");
-    } else {
-        senpai.affinity -= 1;
-        printf("Senpai terlihat bingung dan lewat begitu saja... Afinitas menurun.\n");
+
+    switch (choice) {
+        case 1:
+            senpai.affinity += 3;
+            typewriterEffect("\nRima: \"Melihat berkas sebanyak itu pasti bikin pusing. Mau aku bantu rapikan atau kumpulkan sesuai abjad?\"\n", delay);
+            typewriterEffect("Thallah: (Tersenyum lega) \"Eh, Rima. Kebetulan sekali. Bisa tolong kumpulkan berkas ini sesuai abjad? Aku sudah mau tumbang rasanya.\"\n", delay);
+            typewriterEffect("(Narasi Rima): Aku mengerjakan tugas itu dengan semangat, sesekali melirik Thallah yang tampak kelelahan.\n", delay);
+            typewriterEffect("Kami mulai mengobrol ringan, membicarakan persiapan kelulusannya, tentang ujian-ujiannya yang melelahkan.\n", delay);
+            typewriterEffect("Aku berusaha menciptakan suasana nyaman, melontarkan candaan kecil yang membuatnya tersenyum.\n", delay);
+            typewriterEffect("Rasanya, jarak di antara kami mulai memudar lagi.\n", delay);
+            typewriterEffect("(Poin Effort Rima: +5, Poin Kedekatan Thallah: +3)\n", delay);
+            break;
+        case 2:
+            senpai.affinity += 2;
+            typewriterEffect("\nRima: \"Kak Thallah kelihatan capek. Mau aku belikan minum? Ada teh dingin atau kopi panas?\"\n", delay);
+            typewriterEffect("Thallah: (Tersenyum tipis) \"Wah, makasih banyak, Rima. Teh dingin kedengarannya enak. Aku cuma perlu rapikan berkas ini sedikit lagi.\"\n", delay);
+            typewriterEffect("(Narasi Rima): Setelah membawakannya teh dingin, aku menawarkan diri untuk membantunya merapikan berkas.\n", delay);
+            typewriterEffect("Kami mengobrol santai tentang kegiatannya setelah ujian, dan aku sesekali melontarkan candaan ringan yang membuatnya tersenyum.\n", delay);
+            typewriterEffect("(Poin Effort Rima: +4, Poin Kedekatan Thallah: +2)\n", delay);
+            break;
+        case 3:
+            senpai.affinity += 1;
+            typewriterEffect("\nRima: \"Kak Thallah sibuk banget ya?\"\n", delay);
+            typewriterEffect("Thallah: (Mendesah pelan) \"Lumayan, Rima. Berkas-berkas akhir tahun ini banyak sekali.\"\n", delay);
+            typewriterEffect("(Narasi Rima): Aku hanya berdiri di sana sebentar, merasa canggung untuk menawarkan bantuan lebih jauh.\n", delay);
+            typewriterEffect("Thallah kembali sibuk dengan berkasnya. Aku memutuskan untuk membantu membereskan beberapa map yang tercecer di meja.\n", delay);
+            typewriterEffect("(Poin Effort Rima: +2, Poin Kedekatan Thallah: +1)\n", delay);
+            break;
+        default:
+            typewriterEffect("Pilihan tidak valid.\n", delay);
+            playChapter1();
+            return;
     }
 }
+
 
 void playChapter2() {
     int choice;
@@ -304,7 +344,6 @@ void showProlog() {
     typewriterEffect("namun entah kenapa terdengar begitu menenangkan bagiku. Beberapa kali matanya bersitatap denganku\n", delay);
     typewriterEffect("saat ia melintas, dan setiap kali itu terjadi, jantungku berdegup lebih kencang. Hari itu, interaksi kami\n", delay);
     typewriterEffect("hanya sebatas sapaan singkat dan anggukan kepala.\n", delay);
-    typewriterEffect("=======================\n", delay);
     if (wait()) return;
 
     // Hari ke-2 MPLS
@@ -354,11 +393,11 @@ void showProlog() {
 void showMenu() {
     int pilihan, targetChapter;
     do {
-        printf("\n=== Menu Utama ===\n");
-        printf("1. Mulai permainan\n");
-        printf("2. Lompat ke chapter tertentu\n");
-        printf("3. List character\n");
-        printf("4. Keluar game\n> ");
+        typewriterEffect("\n=== Menu Utama ===\n", delay);
+        typewriterEffect("1. Mulai permainan\n", delay);
+        typewriterEffect("2. Lompat ke chapter tertentu\n", delay);
+        typewriterEffect("3. List character\n", delay);
+        typewriterEffect("4. Keluar game\n> ", delay);
         scanf("%d", &pilihan);
         clearInputBuffer();
 
@@ -368,7 +407,7 @@ void showMenu() {
                 playGameFromStart();
                 break;
             case 2:
-                printf("Masukkan nomor chapter (1-7): ");
+                typewriterEffect("Masukkan nomor chapter (1-7): ", delay2);
                 scanf("%d", &targetChapter);
                 clearInputBuffer();
                 jumpToChapter(targetChapter);
@@ -377,19 +416,19 @@ void showMenu() {
                 listCharacters();
                 break;
             case 4:
-                printf("Terima kasih telah bermain!\n");
+                typewriterEffect("Terima kasih telah bermain!\n", delay2);
                 break;
             default:
-                printf("Pilihan tidak valid.\n");
+                typewriterEffect("Pilihan tidak valid.\n", delay2);
         }
     } while (pilihan != 4);
 }
 
 int main() {
-    printf("=========================");
-    printf("\nGame Otome: A Week Before Graduate I Try to Ask My Senpai to be My Boyfriend\n");
-    printf("Creator:\n- Indy Agustin\n- Grace Larisma Jaya\n- Rakha Atha Muhammad\n- Muhammad Mumtaaz Raihaan Thaariq\n- Muhammad Faatih Yusron\n");
-    printf("=========================");
+    typewriterEffect("=========================", delay2);
+    typewriterEffect("\nGame Otome: A Week Before Graduate I Try to Ask My Senpai to be My Boyfriend\n", delay2);
+    typewriterEffect("Creator:\n- Indy Agustin\n- Grace Larisma Jaya\n- Rakha Atha Muhammad\n- Muhammad Mumtaaz Raihaan Thaariq\n- Muhammad Faatih Yusron\n", delay2);
+    typewriterEffect("=========================", delay2);
 
     addChapter(1, "Kamu melihat Thallah dari kejauhan di pagi hari.");
     addChapter(2, "Thallah mulai menyapamu di koridor sekolah.");
