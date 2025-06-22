@@ -51,8 +51,11 @@ int delay2 = 2;
 void playChapter1();
 void playChapter2();
 void playChapter3();
+void playChapter4();
 void playChapter5();
+void playChapter6();
 void playChapter7();
+void playGraduationDay();
 
 void clearInputBuffer()
 {
@@ -248,12 +251,21 @@ void jumpToChapter(int targetChapter)
         case 3:
             playChapter3();
             break;
+        case 4:
+            playChapter4();
+            break;
         case 5:
             playChapter5();
             break;
+        case 6:
+            playChapter6();
+            break;
         case 7:
             playChapter7();
-            return;
+            break;
+        case 8:
+            playGraduationDay();
+            return;    
         default:
             break;
         }
@@ -425,7 +437,7 @@ void playChapter3()
     typewriterEffect("\nHari 3:\n", delay);
     typewriterEffect("Rima dan Thallah sedang mencari referensi buku untuk proyek fotografi terakhir kami. Suasana perpustakaan yang sepi membuat kami bisa mengobrol lebih santai. Tiba-tiba, Thallah menghentikan langkahnya, menatapku dengan ekspresi ragu.\n", delay);
     typewriterEffect("Thallah:\" Rima, aku mau cerita sesuatu padamu...\"\n", delay);
-    typewriterEffect("Rima: \"(Dalam hati: Deg-degan, semoga ini yang kuharapkan... Jantungku berdetak tak karuan.\"\n)", delay);
+    typewriterEffect("Rima: \"(Dalam hati: Deg-degan, semoga ini yang kuharapkan... Jantungku berdetak tak karuan.\")\n", delay);
     typewriterEffect("Thallah: (Menghela napas) \"Aku... aku sebenarnya suka sama seseorang. Tapi aku bingung harus bagaimana. Aku tidak tahu apakah dia juga suka padaku atau tidak.\"\n", delay);
     typewriterEffect("Dunia seolah berhenti berputar. Kata-katanya menghantamku telak, lebih keras dari bentakan mana pun.\n", delay);
     typewriterEffect("Thallah: \"Dia itu teman SMP-ku dulu. Kami sudah dekat sebulan ini sebelum kelulusan SMA. Gimana ya Ma?\n", delay);
@@ -487,55 +499,325 @@ void playChapter3()
         return;
     }
 }
+
+void playChapter4()
+{
+    int choice;
+    typewriterEffect("\nHari 4: Dunia yang Kelabu\n", delay);
+    typewriterEffect("(Latar: Kantin Sekolah, siang hari)\n", delay);
+    typewriterEffect("(Narasi Rima): Aku terpuruk. Sepanjang hari keempat ini, aku seperti zombie yang berjalan tanpa jiwa.\n", delay);
+    typewriterEffect("Setiap langkah terasa berat, dan setiap sudut sekolah seolah mengingatkanku pada Thallah dan ceritanya.\n", delay);
+    typewriterEffect("Thallah: (Mendekati meja Rima di kantin) \"Rima, kamu kenapa? Kelihatannya lesu sekali. Mau makan siang denganku dan teman-teman OSIS?\"\n", delay);
+
+    typewriterEffect("\nApa yang akan kamu lakukan?\n", delay);
+    printf("1. Tolak dengan alasan jujur\n");
+    printf("2. Tolak dengan alasan umum\n");
+    printf("3. Terima tawarannya (meski berat)\n");
+    printf("0. Menu\n> ");
+    scanf("%d", &choice);
+    clearInputBuffer();
+
+    if (choice == 0) {
+        if (!gameMenu()) return;
+        playChapter4();
+        return;
+    }
+
+    switch (choice) {
+        case 1:
+            senpai.affinity -= 1;
+            senpai.effort -= 3;
+            typewriterEffect("\nRima: (Suara pelan, menghindari kontak mata) \"Maaf, Kak Thallah. Aku... aku kurang enak badan hari ini. Mungkin aku butuh sendiri sebentar.\"\n", delay);
+            typewriterEffect("Thallah: (Ekspresi khawatir) \"Oh, begitu. Baiklah, kalau ada apa-apa, jangan sungkan cerita ya.\"\n", delay);
+            typewriterEffect("(Narasi Rima): Thallah pergi dengan ekspresi khawatir. Aku tahu dia peduli, tapi aku tidak bisa menahan kesedihanku.\n", delay);
+            typewriterEffect("Aku menghabiskan waktu makan siangku sendirian, merasa semakin hampa.\n", delay);
+            typewriterEffect("(Poin Effort Rima: -3, Poin Kedekatan Thallah: -1)\n", delay);
+            break;
+        case 2:
+            senpai.affinity -= 1;
+            senpai.effort -= 2;
+            typewriterEffect("\nRima: (Memaksakan senyum) \"Ah, maaf Kak. Aku sudah bawa bekal. Aku juga masih ada tugas yang harus diselesaikan.\"\n", delay);
+            typewriterEffect("Thallah: (Mengangguk, sedikit kecewa) \"Oh, begitu. Baiklah. Jangan terlalu diporsir ya tugasnya.\"\n", delay);
+            typewriterEffect("(Narasi Rima): Thallah pergi, meninggalkan aku dengan rasa bersalah.\n", delay);
+            typewriterEffect("Aku tahu dia ingin menghiburku, tapi aku tidak bisa berpura-pura baik-baik saja. Aku hanya ingin menghilang.\n", delay);
+            typewriterEffect("(Poin Effort Rima: -2, Poin Kedekatan Thallah: -1)\n", delay);
+            break;
+        case 3:
+            senpai.affinity += 2;
+            senpai.effort += 5;
+            typewriterEffect("\nRima: (Mengambil napas dalam, memaksakan diri) \"Baiklah, Kak. Aku ikut.\"\n", delay);
+            typewriterEffect("Thallah: (Tersenyum lega) \"Nah, begitu dong! Ayo, kita gabung.\"\n", delay);
+            typewriterEffect("(Narasi Rima): Aku mengikuti Thallah ke meja teman-teman OSIS.\n", delay);
+            typewriterEffect("Sepanjang makan siang, aku berusaha terlihat ceria, meski di dalam hati rasanya perih.\n", delay);
+            typewriterEffect("Aku ikut tertawa, sesekali menimpali obrolan, tapi setiap tawa Thallah terasa seperti tusukan.\n", delay);
+            typewriterEffect("Ini terasa sangat berat, tapi aku tahu aku harus tetap berada di dekatnya.\n", delay);
+            typewriterEffect("(Poin Effort Rima: +5, Poin Kedekatan Thallah: +2)\n", delay);
+            break;
+        default:
+            printf("Pilihan tidak valid.\n");
+            playChapter4();
+            return;
+    }
+}
+
 void playChapter5()
 {
     int choice;
-    printf("\nGunakan item untuk menarik perhatian senpai?\n1. Cokelat\n2. Tidak\n0. Menu\n> ");
+    typewriterEffect("\nHari 5: Bangkit dan Bertekad\n", delay);
+    typewriterEffect("(Latar: Kamar Rima, pagi hari)\n", delay);
+    typewriterEffect("(Narasi Rima): Setelah semalaman merenung, menatap langit-langit kamar yang gelap, aku memutuskan. Cukup sudah!\n", delay);
+    typewriterEffect("Aku tidak bisa terus-menerus larut dalam kesedihan dan penyesalan. Cinta itu butuh perjuangan, bukan hanya harapan yang pupus.\n", delay);
+    typewriterEffect("Aku harus merebut Thallah. Lagipula, mereka baru dekat seminggu. Masih ada harapan, kan? Aku tidak akan menyerah begitu saja pada takdir ini.\n", delay);
+    typewriterEffect("Pagi itu, aku kembali bersemangat. Senyumku kembali mengembang, langkahku lebih ringan, dan tatapanku kembali tajam, penuh tekad.\n", delay);
+    typewriterEffect("Aku akan berjuang untuk perasaanku, tidak peduli seberapa kecil kemungkinannya.\n", delay);
+
+    typewriterEffect("\nApa yang akan kamu lakukan?\n", delay);
+    printf("1. Dekati dengan perhatian/bantuan\n");
+    printf("2. Dekati dengan ajakan khusus\n");
+    printf("3. Dekati dengan pamer bakat/prestasi\n");
+    printf("0. Menu\n> ");
     scanf("%d", &choice);
     clearInputBuffer();
-    if (choice == 0)
-    {
-        if (!gameMenu())
-            return;
+
+    if (choice == 0) {
+        if (!gameMenu()) return;
         playChapter5();
         return;
     }
-    if (choice == 1)
-    {
-        useItem("Cokelat");
-        senpai.affinity += 2;
-        printf("Senpai tersenyum menerima cokelatmu. Afinitas meningkat!\n");
+
+    switch (choice) {
+        case 1:
+            senpai.affinity += 4;
+            senpai.effort += 7;
+            typewriterEffect("\n(Narasi Rima): Aku akan kembali bersikap ceria di depan Thallah, bahkan lebih dari biasanya.\n", delay);
+            typewriterEffect("Aku akan mencari cara untuk membantunya dalam tugas OSIS atau fotografi, mendengarkan ceritanya,\n", delay);
+            typewriterEffect("dan sesekali melontarkan candaan yang membuatnya tertawa lepas.\n", delay);
+            typewriterEffect("Aku akan membuatnya melihatku, bukan hanya sebagai adik kelas, tapi sebagai seseorang yang penting baginya.\n", delay);
+            typewriterEffect("(Poin Effort Rima: +7, Poin Kedekatan Thallah: +4)\n", delay);
+            break;
+        case 2:
+            senpai.affinity += 5;
+            senpai.effort += 8;
+            typewriterEffect("\n(Narasi Rima): Aku akan mencoba mengajaknya melakukan sesuatu berdua, seperti mendiskusikan ide proyek fotografi\n", delay);
+            typewriterEffect("atau bahkan mengundang dia untuk makan siang hanya berdua. Aku harus lebih berani menunjukkan bahwa aku ingin lebih dekat dengannya.\n", delay);
+            typewriterEffect("(Poin Effort Rima: +8, Poin Kedekatan Thallah: +5)\n", delay);
+            break;
+        case 3:
+            senpai.affinity += 3;
+            senpai.effort += 6;
+            typewriterEffect("\n(Narasi Rima): Aku akan mencoba menonjolkan diriku di depan Thallah dengan menunjukkan bakat atau prestasiku\n", delay);
+            typewriterEffect("di OSIS atau ekskul fotografi. Mungkin jika dia melihatku lebih dari sekadar adik kelas, dia akan mulai melihatku secara berbeda.\n", delay);
+            typewriterEffect("(Poin Effort Rima: +6, Poin Kedekatan Thallah: +3)\n", delay);
+            break;
+        default:
+            printf("Pilihan tidak valid.\n");
+            playChapter5();
+            return;
+    }
+}
+
+void playChapter6()
+{
+    int choice;
+    typewriterEffect("\nHari 6: Pukulan Kedua\n", delay);
+    typewriterEffect("(Latar: Area Pengumuman UTBK/SNBT di Sekolah)\n", delay);
+    typewriterEffect("(Narasi Rima): Hari itu adalah pengumuman UTBK. Suasana kampus sangat ramai,\n", delay);
+    typewriterEffect("dipenuhi teriakan kebahagiaan dari mereka yang diterima dan isak tangis kekecewaan dari yang belum berhasil.\n", delay);
+    typewriterEffect("Aku melihat Thallah berlari ke arahku, wajahnya berseri-seri, senyumnya paling lebar yang pernah kulihat.\n", delay);
+    typewriterEffect("Thallah: \"Rima! Aku diterima! Aku diterima di jurusan impianku, Teknik Industri!\"\n", delay);
+    typewriterEffect("Thallah bahkan memelukku saking senangnya, saking tak pedulinya dengan tatapan orang-orang.\n", delay);
+    typewriterEffect("(Narasi Rima): Pelukannya terasa hangat, tapi kata-kata selanjutnya langsung menusuk jantungku.\n", delay);
+    typewriterEffect("Thallah: \"Dan... dan dia juga satu kampus denganku! Dia di jurusan Sastra Indonesia!\"\n", delay);
+
+    typewriterEffect("\nApa yang akan kamu lakukan?\n", delay);
+    printf("1. Berikan selamat dengan tulus\n");
+    printf("2. Ubah topik/alihkan perhatian\n");
+    printf("3. Pergi dengan alasan mendesak\n");
+    printf("0. Menu\n> ");
+    scanf("%d", &choice);
+    clearInputBuffer();
+
+    if (choice == 0) {
+        if (!gameMenu()) return;
+        playChapter6();
+        return;
+    }
+
+    switch (choice) {
+        case 1:
+            senpai.affinity += 4;
+            senpai.effort += 8;
+            typewriterEffect("\nRima: (Memaksakan senyum selebar mungkin) \"Wah, selamat ya, Kak Thallah! Aku turut senang sekali untuk Kakak! Semoga sukses di kampus impian!\"\n", delay);
+            typewriterEffect("Thallah: (Tersenyum cerah) \"Makasih banyak, Rima! Kamu memang teman baikku!\"\n", delay);
+            typewriterEffect("(Narasi Rima): Thallah tidak sadar betapa kata-katanya mengoyak hatiku untuk kedua kalinya.\n", delay);
+            typewriterEffect("Dia menganggapku sebagai teman baik, tempat dia mencurahkan kebahagiaannya.\n", delay);
+            typewriterEffect("Dan kebahagiaannya adalah karena dia satu kampus dengan cowok yang dia suka.\n", delay);
+            typewriterEffect("(Poin Effort Rima: +8, Poin Kedekatan Thallah: +4)\n", delay);
+            break;
+        case 2:
+            senpai.affinity += 0;
+            senpai.effort += 2;
+            typewriterEffect("\nRima: (Mengganti ekspresi, sedikit panik) \"Wah, itu bagus sekali, Kak! Ngomong-ngomong,\n", delay);
+            typewriterEffect("Kakak sudah lihat daftar mahasiswa baru yang masuk OSIS tahun depan? Banyak wajah baru lho.\"\n", delay);
+            typewriterEffect("Thallah: (Sedikit mengerutkan kening) \"Oh, ya? Belum sempat lihat. Tapi... kamu kenapa, Rima? Kok tiba-tiba ganti topik?\"\n", delay);
+            typewriterEffect("(Narasi Rima): Thallah tampak menyadari usahaku untuk mengalihkan pembicaraan.\n", delay);
+            typewriterEffect("Aku merasa canggung, dan dia tidak terlalu melanjutkan euforianya. Suasana terasa sedikit aneh.\n", delay);
+            typewriterEffect("(Poin Effort Rima: +2, Poin Kedekatan Thallah: +0)\n", delay);
+            break;
+        case 3:
+            senpai.affinity -= 3;
+            senpai.effort -= 5;
+            typewriterEffect("\nRima: (Ekspresi menahan sakit, buru-buru) \"Selamat, Kak! Maaf, aku harus pergi sekarang. Ada urusan mendadak!\"\n", delay);
+            typewriterEffect("(Langsung lari)\n", delay);
+            typewriterEffect("Thallah: (Berteriak) \"Eh, Rima? Ada apa? Hati-hati!\"\n", delay);
+            typewriterEffect("(Narasi Rima): Aku melarikan diri, tidak sanggup menahan rasa sakit.\n", delay);
+            typewriterEffect("Thallah mungkin bingung, tapi aku tidak peduli saat itu. Yang penting aku bisa menjauh dari situasi ini.\n", delay);
+            typewriterEffect("(Poin Effort Rima: -5, Poin Kedekatan Thallah: -3)\n", delay);
+            break;
+        default:
+            printf("Pilihan tidak valid.\n");
+            playChapter6();
+            return;
     }
 }
 
 void playChapter7()
 {
     int choice;
-    printf("Senpai terlihat bingung kamu tidak mengobrol lagi...\n");
-    printf("Apakah kamu ingin menyatakan cinta saat kelulusan?\n1. Ya\n2. Tidak\n0. Menu\n> ");
+    typewriterEffect("\nHari 7: Dilema dan Melodi Sedih\n", delay);
+    typewriterEffect("(Latar: Lingkungan Sekolah, Menjelang Akhir Hari Sekolah)\n", delay);
+    typewriterEffect("(Narasi Rima): Sejak pengumuman UTBK, aku dan Thallah tidak lagi berkomunikasi seintensif sebelumnya.\n", delay);
+    typewriterEffect("Aku menjaga jarak, hatiku terlalu sakit untuk sekadar bercanda dengannya seperti biasa.\n", delay);
+    typewriterEffect("Aku tidak lagi mencari-cari alasan untuk menemuinya, tidak lagi mengirim pesan-pesan iseng.\n", delay);
+    typewriterEffect("Ini adalah hari terakhir kami di sekolah sebelum kelulusannya. Setelah ini, semuanya akan berubah.\n", delay);
+    typewriterEffect("Aku merasa hari ini berlalu begitu lambat, sekaligus begitu cepat.\n", delay);
+
+    typewriterEffect("\n(Latar: Malam Hari, Kamar Rima)\n", delay);
+    typewriterEffect("(Narasi Rima): Suara lagu sedih mengalun pelan dari ponselku, menemani kesendirianku di malam terakhir sebelum kelulusan Thallah.\n", delay);
+    typewriterEffect("Aku memandang langit-langit kamarku yang gelap. Malam ini adalah penentuan.\n", delay);
+
+    typewriterEffect("\n(POV Thallah)\n", delay);
+    typewriterEffect("(Narasi Thallah): Aku agak bingung. Tumben sekali Rima, si adik kelas yang selalu cerewet dan kocak itu, tidak lagi mendekatiku.\n", delay);
+    typewriterEffect("Biasanya dia selalu punya bahan obrolan, selalu ada di sekitarku, bahkan di saat aku senang maupun sedih.\n", delay);
+    typewriterEffect("Aku bahkan sempat terkejut dia memelukku kemarin saat pengumuman, rasanya aneh, tapi nyaman.\n", delay);
+    typewriterEffect("Apakah dia sibuk dengan persiapan kuliahnya? Atau aku membuat kesalahan saat bercerita tentang dia...\n", delay);
+    typewriterEffect("tentang cowok yang aku suka? Aku jadi sedikit merindukan kehadirannya yang selalu ceria dan caranya membuatku tertawa lepas.\n", delay);
+    typewriterEffect("Hari-hari terakhir di sekolah ini terasa lebih sepi tanpanya, dan entah kenapa, ada perasaan aneh yang mengganjal di dadaku. Ini seperti ada yang kurang.\n", delay);
+
+    typewriterEffect("\n(Kembali ke POV Rima)\n", delay);
+    typewriterEffect("(Narasi Rima): Aku harus memutuskan. Haruskah aku menyatakan perasaanku sekarang?\n", delay);
+    typewriterEffect("Di hari kelulusan besok, di tengah perpisahan dan euforia kelulusan?\n", delay);
+    typewriterEffect("Atau aku harus menunggu lain kali, saat semuanya sudah lebih tenang, dan aku punya strategi yang lebih matang...\n", delay);
+    typewriterEffect("mungkin setelah dia dan seniornya itu... ah, entahlah.\n", delay);
+
+    typewriterEffect("\nMalam Sebelum Kelulusan: Pilihan Penentu\n", delay);
+    printf("1. TEMBAK BESOK SAAT KELULUSAN\n");
+    printf("2. JANGAN TEMBAK BESOK\n");
+    printf("0. Menu\n> ");
     scanf("%d", &choice);
     clearInputBuffer();
-    if (choice == 0)
-    {
-        if (!gameMenu())
-            return;
+
+    if (choice == 0) {
+        if (!gameMenu()) return;
         playChapter7();
         return;
     }
-    if (choice == 1)
-    {
-        if (senpai.affinity >= 5)
-        {
-            printf("\nSenpai menerima cintamu! ❤️ Ending Bahagia!\n");
-        }
-        else
-        {
-            printf("\nSenpai menolakmu dengan halus... Ending Sedih 😢\n");
-        }
+
+    switch (choice) {
+        case 1:
+            senpai.effort += 10;
+            typewriterEffect("\n(Narasi Rima): Setelah pergolakan batin yang panjang, mengingat semua 'effort' yang sudah kukerahkan,\n", delay);
+            typewriterEffect("semua kesabaran dan dukungan yang kuberikan padanya, aku memutuskan untuk...\n", delay);
+            typewriterEffect("menembak besok di hari kelulusan. Ini adalah pertaruhan terakhirku.\n", delay);
+            typewriterEffect("(Poin Effort Rima: +10)\n", delay);
+            break;
+        case 2:
+            typewriterEffect("\n(Narasi Rima): Mungkin terlalu riskan. Ada kemungkinan aku akan ditolak mentah-mentah,\n", delay);
+            typewriterEffect("dan itu akan merusak momen kelulusan kami berdua, dan mungkin persahabatan yang sudah terjalin.\n", delay);
+            typewriterEffect("Lebih baik biarkan waktu yang menjawab. Biarkan dia tahu perasaanku dengan caraku sendiri, tanpa perlu kata-kata.\n", delay);
+            typewriterEffect("(Poin Effort Rima: +0)\n", delay);
+            break;
+        default:
+            printf("Pilihan tidak valid.\n");
+            playChapter7();
+            return;
     }
-    else
-    {
-        printf("\nKamu menyimpan perasaanmu sendiri... Ending Netral.\n");
+}
+
+void playGraduationDay() {
+    int choice;
+    typewriterEffect("\nHari Kelulusan: Detik-detik Penentu\n", delay);
+    typewriterEffect("(Latar: Aula Sekolah, Acara Kelulusan)\n", delay);
+    typewriterEffect("(Narasi Rima): Pagi harinya, aku merasakan jantungku berdegup kencang, lebih kencang dari lari maraton yang pernah kulakukan.\n", delay);
+    typewriterEffect("Setelah acara kelulusan selesai, di tengah keramaian siswa yang berfoto dan berpamitan, aku mencari Thallah.\n", delay);
+    typewriterEffect("Aku melihatnya sedang tertawa bersama teman-temannya. Ia tampak begitu gagah, bahkan dalam seragam yang sudah sedikit kusut.\n", delay);
+    typewriterEffect("Aku menarik napas dalam, memantapkan hati, dan berjalan mendekatinya.\n", delay);
+    typewriterEffect("Rima: \"Kak Thallah,\" panggilku, suaraku sedikit tercekat.\n", delay);
+    typewriterEffect("Thallah: (Menoleh, senyumnya sedikit memudar melihat ekspresi seriusku) \"Eh, Rima. Ada apa? Tumben serius begitu.\"\n", delay);
+
+    typewriterEffect("\nApa yang ingin kamu lakukan?\n", delay);
+    printf("1. Nyatakan perasaan dengan surat\n");
+    printf("2. Ungkapkan langsung secara lisan\n");
+    printf("0. Jangan nyatakan perasaan (pilihan dari Chapter 7)\n> ");
+    scanf("%d", &choice);
+    clearInputBuffer();
+
+    if (choice == 0) {
+        typewriterEffect("\n(Narasi Rima): Setelah pergolakan batin yang panjang, aku memutuskan untuk tidak menembaknya.\n", delay);
+        typewriterEffect("Mungkin ini bukan waktu yang tepat. Aku akan terus berjuang dengan caraku sendiri, menunjukkan perasaanku lewat tindakan dan perhatian,\n", delay);
+        typewriterEffect("sampai suatu hari nanti dia menyadari perasaanku. Mungkin... suatu hari nanti.\n", delay);
+        typewriterEffect("Kelulusan pun tiba, dan Thallah lulus tanpa mengetahui perasaanku yang sesungguhnya.\n", delay);
+        typewriterEffect("Aku hanya bisa menatap punggungnya yang semakin menjauh, membawa serta sebagian hatiku.\n", delay);
+        typewriterEffect("\n=== ENDING: Tidak Pernah Diungkapkan ===\n", delay);
+        return;
+    }
+
+    // Jika pemain memilih 1 atau 2, tampilkan adegan awal yang sama
+    if (choice == 1) {
+        typewriterEffect("\nRima: \"Aku... aku mau ngomong sesuatu,\" kataku, suaraku sedikit bergetar.\n", delay);
+        typewriterEffect("Aku mengeluarkan sebuah surat yang sudah kubuat semalaman, mencurahkan semua perasaanku di sana.\n", delay);
+        typewriterEffect("\"Aku tahu ini mungkin mendadak, dan mungkin kamu akan terkejut. Tapi aku... aku suka sama kamu, Kak Thallah.\"\n", delay);
+        typewriterEffect("\"Aku tahu kamu suka orang lain, tapi aku hanya ingin kamu tahu perasaanku.\"\n", delay);
+    } else if (choice == 2) {
+        typewriterEffect("\nRima: \"Kak Thallah, ini mungkin berat buat Kakak dengar. Tapi selama ini...\"\n", delay);
+        typewriterEffect("\"Aku punya perasaan lebih dari sekadar junior ke senior. Aku suka sama Kakak.\"\n", delay);
+    }
+
+    // Evaluasi ending berdasarkan skor
+    if (senpai.effort > 30 && senpai.affinity > 15) {
+        // ENDING DITERIMA
+        typewriterEffect("\n(Narasi Rima): Thallah terdiam, matanya melebar. Wajahnya menunjukkan ekspresi terkejut, sedikit bingung,\n", delay);
+        typewriterEffect("lalu perlahan sebuah senyum tipis, namun tulus, mengembang di bibirnya.\n", delay);
+        if (choice == 1) {
+            typewriterEffect("Dia mengambil surat itu dari tanganku.\n", delay);
+        } else {
+            typewriterEffect("Dia menatapku dalam-dalam, pandangannya penuh pengertian.\n", delay);
+        }
+        typewriterEffect("Thallah: \"Rima... aku tidak menyangka kamu akan mengatakan ini. Jujur, aku terkejut.\n", delay);
+        typewriterEffect("Tapi... aku juga merasakan sesuatu yang aneh selama seminggu ini.\n", delay);
+        typewriterEffect("Sejak kamu mendengarkan ceritaku dengan sabar, sejak kamu tetap di sisiku meskipun aku banyak cerita tentang dia...\n", delay);
+        typewriterEffect("Aku mulai menyadari ada perasaan lain yang tumbuh. Kamu selalu ada, dan kamu membuatku nyaman. Rasanya berbeda dengan yang lain.\"\n", delay);
+        typewriterEffect("Dia menarik napas. \"Mungkin ini gila, tapi... beri aku waktu, ya? Tapi... ya, aku mau mencoba bersamamu.\"\n", delay);
+        typewriterEffect("(Narasi Rima): Senyumnya semakin lebar, dan kali ini, hatiku benar-benar lega.\n", delay);
+        typewriterEffect("Kami pun tersenyum satu sama lain, di tengah riuhnya suasana kelulusan, seolah hanya ada kami berdua di sana.\n", delay);
+        typewriterEffect("\n=== TRUE ENDING: Bersama ===\n", delay);
+    } else {
+        // ENDING DITOLAK
+        typewriterEffect("\n(Narasi Rima): Thallah terdiam, matanya melebar. Wajahnya menunjukkan ekspresi terkejut, sedikit bingung,\n", delay);
+        typewriterEffect("lalu perlahan sebuah senyum tipis dan sendu mengembang di bibirnya.\n", delay);
+        if (choice == 1) {
+            typewriterEffect("Dia menggenggam tanganku lembut, menolak surat yang kupegang.\n", delay);
+        } else {
+            typewriterEffect("Dia menatapku dengan tatapan kasihan.\n", delay);
+        }
+        typewriterEffect("Thallah: \"Rima... aku hargai keberanian dan kejujuranmu. Aku... aku minta maaf.\"\n", delay);
+        typewriterEffect("\"Aku sudah menganggapmu seperti adik sendiri, dan kamu adalah teman terbaik selama di sekolah ini.\n", delay);
+        typewriterEffect("Tapi... perasaanku sudah ada untuk orang lain, dan itu tidak bisa aku paksakan. Aku harap kamu mengerti.\"\n", delay);
+        typewriterEffect("\"Aku harap kita tetap bisa jadi teman baik, ya? Jangan jadi canggung gara-gara ini.\"\n", delay);
+        typewriterEffect("(Narasi Rima): Meskipun sakit, aku mengangguk pelan, berusaha tersenyum. Air mataku hampir jatuh, tapi aku menahannya.\n", delay);
+        typewriterEffect("Mungkin ini adalah akhir dari kisahku dengannya sebagai lebih dari teman, tapi setidaknya, aku sudah jujur pada perasaanku.\n", delay);
+        typewriterEffect("Kelulusan Thallah yang seharusnya menjadi momen bahagia, kini terasa begitu getir.\n", delay);
+        typewriterEffect("\n=== BAD ENDING: Tidak Terbalas ===\n", delay);
     }
 }
 
@@ -683,13 +965,14 @@ int main()
     typewriterEffect("Creator:\n- Indy Agustin\n- Grace Larisma Jaya\n- Rakha Atha Muhammad\n- Muhammad Mumtaaz Raihaan Thaariq\n- Muhammad Faatih Yusron\n", delay2);
     typewriterEffect("=========================", delay2);
 
-    addChapter(1, "Kamu melihat Thallah dari kejauhan di pagi hari.");
-    addChapter(2, "Thallah mulai menyapamu di koridor sekolah.");
-    addChapter(3, "Thallah bercerita tentang seseorang yang dia sukai.");
-    addChapter(4, "Kamu merasa tidak semangat dan mulai menjauh.");
-    addChapter(5, "Kamu mulai bangkit dan ingin bicara lagi.");
-    addChapter(6, "Thallah mengajakmu ngobrol tentang masa depan.");
-    addChapter(7, "Kelulusan datang. Saatnya menyatakan perasaan atau tidak.");
+    addChapter(1, "Pendekatan Awal");
+    addChapter(2, "Saling Terbuka");
+    addChapter(3, "Pukulan Tak Terduga");
+    addChapter(4, "Dunia yang Kelabu");
+    addChapter(5, "Bangkit dan Bertekad");
+    addChapter(6, "Pukulan Kedua");
+    addChapter(7, "Dilema dan Melodi Sedih");
+    addChapter(8, "Detik-detik Penentu");
 
     addItem("Surat cinta");
     addItem("Cokelat");
