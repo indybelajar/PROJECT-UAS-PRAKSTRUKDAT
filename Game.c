@@ -15,10 +15,10 @@ typedef struct {
     int affinity;
 } Character;
 
-// Struct untuk chapter/hari
+// Struct untuk chapter
 typedef struct Chapter {
-    int day;
-    char scene[200];
+    int chapterNumber;
+    char scene[500];
     struct Chapter* next;
 } Chapter;
 
@@ -27,16 +27,15 @@ Item* inventory = NULL;
 Character senpai = {"Raka", "20 April", 0};
 Chapter* head = NULL;
 
-// Tambah item ke inventory
+// Fungsi tambah item
 void addItem(char name[]) {
     Item* newItem = (Item*)malloc(sizeof(Item));
     strcpy(newItem->name, name);
     newItem->next = inventory;
     inventory = newItem;
-    printf("Item '%s' ditambahkan ke inventory.\n", name);
 }
 
-// Hapus item dari inventory (pakai item)
+// Fungsi pakai item
 void useItem(char name[]) {
     Item *temp = inventory, *prev = NULL;
     while (temp != NULL && strcmp(temp->name, name) != 0) {
@@ -66,10 +65,10 @@ void showInventory() {
     }
 }
 
-// Tambah chapter ke linked list
-void addChapter(int day, char* scene) {
+// Tambah chapter
+void addChapter(int chapterNumber, char* scene) {
     Chapter* newChap = (Chapter*)malloc(sizeof(Chapter));
-    newChap->day = day;
+    newChap->chapterNumber = chapterNumber;
     strcpy(newChap->scene, scene);
     newChap->next = NULL;
 
@@ -83,111 +82,166 @@ void addChapter(int day, char* scene) {
     }
 }
 
-// Cari karakter
-void searchCharacter(char* keyword) {
-    if (strstr(senpai.name, keyword) || strstr(senpai.birthdate, keyword)) {
-        printf("Karakter ditemukan:\nNama: %s\nLahir: %s\nAfinitas: %d\n", senpai.name, senpai.birthdate, senpai.affinity);
+// Tampilkan karakter
+void listCharacters() {
+    printf("\n=== Daftar Karakter ===\n");
+    printf("Nama: %s\n", senpai.name);
+    printf("Tanggal Lahir: %s\n", senpai.birthdate);
+    printf("Afinitas: %d\n", senpai.affinity);
+}
+
+// Lompat ke chapter tertentu
+void jumpToChapter(int targetChapter) {
+    Chapter* current = head;
+    while (current != NULL) {
+        if (current->chapterNumber == targetChapter) {
+            printf("\nChapter %d:\n%s\n", current->chapterNumber, current->scene);
+            return;
+        }
+        current = current->next;
+    }
+    printf("Chapter tidak ditemukan.\n");
+}
+
+// Modul per chapter
+void playChapter1() {
+    int choice;
+    printf("MC: Ah, indahnya hari ini.\n(Kakak kelas datang)\nMC: (Apa yang harus aku lakukan?)\n");
+    printf("1. Ucapkan salam\n2. Abaikan saja\n> ");
+    scanf("%d", &choice);
+    if (choice == 1) {
+        senpai.affinity += 1;
+        printf("Senpai membalas dengan senyuman. Afinitas meningkat!\n");
     } else {
-        printf("Karakter tidak ditemukan.\n");
+        senpai.affinity -= 1;
+        printf("Senpai terlihat bingung dan lewat begitu saja... Afinitas menurun.\n");
     }
 }
 
-// Main game logic
-void playGame() {
-    Chapter* current = head;
+void playChapter2() {
     int choice;
+    printf("Senpai: Hai, kamu mahasiswa baru ya?\nMC: (Bagaimana ya jawabnya?)\n");
+    printf("1. Jawab dengan semangat\n2. Jawab singkat saja\n> ");
+    scanf("%d", &choice);
+    if (choice == 1) {
+        senpai.affinity += 2;
+        printf("Senpai terkesan dengan semangatmu!\n");
+    } else {
+        printf("Senpai tetap ramah, tapi tampak kecewa sedikit.\n");
+    }
+}
+
+void playChapter3() {
+    int choice;
+    printf("Senpai cerita bahwa dia sedang dekat dengan seseorang.\n");
+    printf("MC: (Apa reaksimu?)\n1. Marah\n2. Sedih\n3. Dengarkan sampai habis\n> ");
+    scanf("%d", &choice);
+    if (choice == 1) {
+        senpai.affinity -= 2;
+        printf("Kamu marah... afinitas menurun!\n");
+    } else if (choice == 2) {
+        senpai.affinity += 1;
+        printf("Kamu sedih... afinitas naik sedikit.\n");
+    } else if (choice == 3) {
+        senpai.affinity += 2;
+        printf("Kamu mendengarkan dengan sabar... afinitas meningkat!\n");
+    }
+}
+
+void playChapter5() {
+    int choice;
+    printf("\nGunakan item untuk menarik perhatian senpai?\n1. Cokelat\n2. Tidak\n> ");
+    scanf("%d", &choice);
+    if (choice == 1) {
+        useItem("Cokelat");
+        senpai.affinity += 2;
+        printf("Senpai tersenyum menerima cokelatmu. Afinitas meningkat!\n");
+    }
+}
+
+void playChapter7() {
+    int choice;
+    printf("Senpai terlihat bingung kamu tidak mengobrol lagi...\n");
+    printf("Apakah kamu ingin menyatakan cinta saat kelulusan?\n1. Ya\n2. Tidak\n> ");
+    scanf("%d", &choice);
+    if (choice == 1) {
+        if (senpai.affinity >= 5) {
+            printf("\nSenpai menerima cintamu! \u2764\ufe0f Ending Bahagia!\n");
+        } else {
+            printf("\nSenpai menolakmu dengan halus... Ending Sedih \U0001f622\n");
+        }
+    } else {
+        printf("\nKamu menyimpan perasaanmu sendiri... Ending Netral.\n");
+    }
+}
+
+void playGameFromStart() {
+    Chapter* current = head;
     while (current != NULL) {
-        printf("\nHari %d:\n%s\n", current->day, current->scene);
-
-        if (current->day == 3) {
-            printf("Pilihanmu saat senpai cerita tentang cewek lain:\n");
-            printf("1. Marah\n2. Sedih\n3. Dengerin sampe habis\n> ");
-            scanf("%d", &choice);
-            if (choice == 1) {
-                senpai.affinity -= 2;
-                printf("Kamu marah... afinitas menurun!\n");
-            } else if (choice == 2) {
-                senpai.affinity += 1;
-                printf("Kamu sedih... afinitas naik sedikit.\n");
-            } else if (choice == 3) {
-                senpai.affinity += 2;
-                printf("Kamu mendengarkan dengan sabar... afinitas meningkat!\n");
-            }
+        printf("\nChapter %d:\n%s\n", current->chapterNumber, current->scene);
+        switch (current->chapterNumber) {
+            case 1: playChapter1(); break;
+            case 2: playChapter2(); break;
+            case 3: playChapter3(); break;
+            case 5: playChapter5(); break;
+            case 7: playChapter7(); return;
+            default: break;
         }
-
-        if (current->day == 5) {
-            printf("\nGunakan item untuk menarik perhatian senpai?\n1. Cokelat\n2. Tidak\n> ");
-            scanf("%d", &choice);
-            if (choice == 1) {
-                useItem("Cokelat");
-                senpai.affinity += 2;
-                printf("Senpai tersenyum menerima cokelatmu. Afinitas meningkat!\n");
-            }
-        }
-
-        if (current->day == 7) {
-            printf("Senpai terlihat heran kamu tidak ngobrol lagi...\n");
-            printf("Apakah kamu ingin menyatakan cinta saat kelulusan?\n1. Ya\n2. Tidak\n> ");
-            scanf("%d", &choice);
-            if (choice == 1) {
-                if (senpai.affinity >= 5) {
-                    printf("\nSenpai menerima cintamu! ❤️ Ending Bahagia!\n");
-                } else {
-                    printf("\nSenpai menolakmu dengan halus... Ending Sedih 😢\n");
-                }
-                return;
-            } else {
-                printf("\nKamu menyimpan perasaanmu sendiri... Ending Netral.\n");
-                return;
-            }
-        }
-
         current = current->next;
     }
 }
 
+// Menu utama
+void showMenu() {
+    int pilihan, targetChapter;
+    do {
+        printf("\n=== Menu Utama ===\n");
+        printf("1. Mulai permainan\n");
+        printf("2. Lompat ke chapter tertentu\n");
+        printf("3. List character\n");
+        printf("4. Keluar game\n> ");
+        scanf("%d", &pilihan);
+
+        switch (pilihan) {
+            case 1:
+                playGameFromStart();
+                break;
+            case 2:
+                printf("Masukkan nomor chapter (1-7): ");
+                scanf("%d", &targetChapter);
+                jumpToChapter(targetChapter);
+                break;
+            case 3:
+                listCharacters();
+                break;
+            case 4:
+                printf("Terima kasih telah bermain!\n");
+                break;
+            default:
+                printf("Pilihan tidak valid.\n");
+        }
+    } while (pilihan != 4);
+}
+
 int main() {
-    char mulai;
-
+    printf("=========================");
+    printf("\nGame Otome Berbasis Teks\n");
+    printf("Creator:\n- Indy Agustin\n- Grace Larisma Jaya\n- Rakha Atha Muhammad\n- Muhammad Mumtaaz Raihaan Thaariq\n- Muhammad Faatih Yusron\n");
     printf("=========================\n");
-    printf("Game Otome Berbasis Teks\n");
-    printf("Creator:\n");
-    printf("- Indy Agustin\n");
-    printf("- Grace Larisma Jaya\n");
-    printf("- Rakha Atha Muhammad\n");
-    printf("- Muhammad Mumtaaz Raihaan Thaariq\n");
-    printf("- Muhammad Faatih Yusron\n");
-    printf("=========================\n");
-    printf("\nMulai Permainan? (Y/N): ");
-    scanf(" %c", &mulai);
 
-    if (mulai != 'Y' && mulai != 'y') {
-        printf("Permainan dibatalkan. Terima kasih!\n");
-        return 0;
-    }
+    addChapter(1, "Kamu melihat senpai dari kejauhan di pagi hari.");
+    addChapter(2, "Senpai mulai menyapamu di koridor kampus.");
+    addChapter(3, "Senpai bercerita tentang seseorang yang dia sukai.");
+    addChapter(4, "Kamu merasa tidak semangat dan mulai menjauh.");
+    addChapter(5, "Kamu mulai bangkit dan ingin bicara lagi.");
+    addChapter(6, "Senpai mengajakmu ngobrol tentang masa depan.");
+    addChapter(7, "Kelulusan datang. Saatnya menyatakan perasaan atau tidak.");
 
-    // Tambah cerita
-    addChapter(1, "Kamu bertemu senpai di ospek. Kesan pertama baik.");
-    addChapter(2, "Kalian mulai terbuka satu sama lain.");
-    addChapter(3, "Senpai cerita dia suka orang lain. Kamu merasa aneh...");
-    addChapter(4, "Kamu ngedown dan menghindari senpai.");
-    addChapter(5, "Kamu bangkit dan ingin perjuangkan senpai.");
-    addChapter(6, "Senpai cerita bahwa orang yang dia suka kuliah di kampus yang sama.");
-    addChapter(7, "Hari terakhir ospek. Apakah kamu akan menyatakan cinta?");
-
-    // Tambah item ke inventory
     addItem("Surat cinta");
     addItem("Cokelat");
+
     showInventory();
-
-    // Main game
-    playGame();
-
-    // Fitur pencarian karakter
-    printf("\n\nCari karakter berdasarkan nama/tanggal lahir:\nKetik keyword: ");
-    char keyword[50];
-    scanf("%s", keyword);
-    searchCharacter(keyword);
+    showMenu();
 
     return 0;
 }
