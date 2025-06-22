@@ -4,9 +4,6 @@
 #include <windows.h>
 #include <conio.h>
 
-// test
-//  Struct inventory
-
 // Struct inventory
 typedef struct Item
 {
