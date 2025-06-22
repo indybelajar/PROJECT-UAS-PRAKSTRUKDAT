@@ -2,8 +2,8 @@
 #include <stdlib.h>
 #include <string.h>
 #include <windows.h>
-
-// Struct inventory
+// test
+//  Struct inventory
 typedef struct Item
 {
     char name[50];
