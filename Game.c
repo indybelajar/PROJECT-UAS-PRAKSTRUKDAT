@@ -90,19 +90,6 @@ void listCharacters() {
     printf("Afinitas: %d\n", senpai.affinity);
 }
 
-// Lompat ke chapter tertentu
-void jumpToChapter(int targetChapter) {
-    Chapter* current = head;
-    while (current != NULL) {
-        if (current->chapterNumber == targetChapter) {
-            printf("\nChapter %d:\n%s\n", current->chapterNumber, current->scene);
-            return;
-        }
-        current = current->next;
-    }
-    printf("Chapter tidak ditemukan.\n");
-}
-
 // Modul per chapter
 void playChapter1() {
     int choice;
@@ -166,9 +153,9 @@ void playChapter7() {
     scanf("%d", &choice);
     if (choice == 1) {
         if (senpai.affinity >= 5) {
-            printf("\nSenpai menerima cintamu! \u2764\ufe0f Ending Bahagia!\n");
+            printf("\nSenpai menerima cintamu! ❤️ Ending Bahagia!\n");
         } else {
-            printf("\nSenpai menolakmu dengan halus... Ending Sedih \U0001f622\n");
+            printf("\nSenpai menolakmu dengan halus... Ending Sedih 😢\n");
         }
     } else {
         printf("\nKamu menyimpan perasaanmu sendiri... Ending Netral.\n");
@@ -186,6 +173,37 @@ void playGameFromStart() {
             case 5: playChapter5(); break;
             case 7: playChapter7(); return;
             default: break;
+        }
+        current = current->next;
+    }
+}
+
+// Lompat ke chapter tertentu dan lanjutkan permainan
+void jumpToChapter(int targetChapter) {
+    Chapter* current = head;
+    int found = 0;
+    while (current != NULL) {
+        if (current->chapterNumber == targetChapter) {
+            found = 1;
+            break;
+        }
+        current = current->next;
+    }
+
+    if (!found) {
+        printf("Chapter tidak ditemukan.\n");
+        return;
+    }
+
+    while (current != NULL) {
+        printf("\nChapter %d:\n%s\n", current->chapterNumber, current->scene);
+        switch (current->chapterNumber) {
+            case 1: playChapter1(); break;
+            case 2: playChapter2(); break;
+            case 3: playChapter3(); break;
+            case 5: playChapter5(); break;
+            case 7: playChapter7(); return;
+            default: printf("(Tidak ada interaksi di chapter ini)\n"); break;
         }
         current = current->next;
     }
