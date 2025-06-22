@@ -2,6 +2,8 @@
 #include <stdlib.h>
 #include <string.h>
 #include <windows.h>
+#include <conio.h>
+
 // test
 //  Struct inventory
 typedef struct Item
@@ -27,6 +29,16 @@ typedef struct Chapter
     struct Chapter *next;
 } Chapter;
 
+// chapter state untuk menyimpan riwayat poin
+typedef struct
+{
+    int affinity;
+    int effort;
+    int completed; // 0 = belum, 1 = sudah
+} ChapterState;
+
+ChapterState chapterStates[8]; // 0 tidak digunakan, 1-7 untuk chapter 1-7
+
 // Variabel global
 Item *inventory = NULL;
 Character senpai = {"Thallah", "12 Oktober", 0};
@@ -50,14 +62,67 @@ void clearInputBuffer()
         ;
 }
 
+void saveChapterState(int chapterNumber)
+{
+    if (chapterNumber >= 1 && chapterNumber < 8)
+    {
+        chapterStates[chapterNumber].affinity = senpai.affinity;
+        chapterStates[chapterNumber].effort = senpai.effort;
+        chapterStates[chapterNumber].completed = 1;
+    }
+}
+
+void loadStateFromPreviousChapter(int chapterNumber)
+{
+    if (chapterNumber == 1)
+    {
+        senpai.affinity = 0;
+        senpai.effort = 0;
+        return;
+    }
+    if (chapterNumber >= 2 && chapterNumber < 8 && chapterStates[chapterNumber - 1].completed)
+    {
+        senpai.affinity = chapterStates[chapterNumber - 1].affinity;
+        senpai.effort = chapterStates[chapterNumber - 1].effort;
+    }
+}
+
 // efek typewiter
+// void typewriterEffect(const char *text, int delay)
+// {
+//     for (int i = 0; text[i] != '\0'; i++)
+//     {
+//         printf("%c", text[i]);
+//         fflush(stdout);
+//         Sleep(delay); // delay dalam milidetik
+//     }
+// }
 void typewriterEffect(const char *text, int delay)
 {
+    int skip = 0;
+
     for (int i = 0; text[i] != '\0'; i++)
     {
-        printf("%c", text[i]);
-        fflush(stdout);
-        Sleep(delay); // delay dalam milidetik
+        if (_kbhit()) // jika ada tombol ditekan
+        {
+            char ch = _getch();
+            if (ch == 13) // ENTER = ASCII 13
+            {
+                skip = 1;
+            }
+        }
+
+        if (skip)
+        {
+            printf("%s", &text[i]); // cetak sisa teks langsung
+            break;
+        }
+        else
+        {
+            printf("%c", text[i]);
+            fflush(stdout);
+            Sleep(delay);
+        }
     }
 }
 
@@ -164,15 +229,40 @@ void jumpToChapter(int targetChapter)
 {
     Chapter *current = head;
     char fullText[600];
-    while (current != NULL)
+    while (currentChapter != NULL)
     {
-        if (current->chapterNumber == targetChapter)
+        loadStateFromPreviousChapter(currentChapter->chapterNumber); // <--- Tambahkan ini
+
+        typewriterEffect("\n=================\n", delay2);
+        snprintf(fullText, sizeof(fullText), "Chapter %d:\n%s\n", currentChapter->chapterNumber, currentChapter->scene);
+        typewriterEffect(fullText, delay2);
+        typewriterEffect("=================\n", delay2);
+
+        switch (currentChapter->chapterNumber)
         {
-            currentChapter = current;
+        case 1:
+            playChapter1();
+            break;
+        case 2:
+            playChapter2();
+            break;
+        case 3:
+            playChapter3();
+            break;
+        case 5:
+            playChapter5();
+            break;
+        case 7:
+            playChapter7();
+            return;
+        default:
             break;
         }
-        current = current->next;
+
+        saveChapterState(currentChapter->chapterNumber); // <--- Tambahkan ini
+        currentChapter = currentChapter->next;
     }
+
     if (currentChapter == NULL)
     {
         printf("Chapter tidak ditemukan.\n");
@@ -549,6 +639,8 @@ void showMenu()
 
 int main()
 {
+    typewriterEffect("(Info: Tekan ENTER kapan saja untuk skip tulisan lambat.)\n", delay2);
+    typewriterEffect("Tekan ENTER untuk mulai...)\n\n", delay2);
     typewriterEffect("=========================", delay2);
     typewriterEffect("\nGame Otome: A Week Before Graduate I Try to Ask My Senpai to be My Boyfriend\n", delay2);
     typewriterEffect("Creator:\n- Indy Agustin\n- Grace Larisma Jaya\n- Rakha Atha Muhammad\n- Muhammad Mumtaaz Raihaan Thaariq\n- Muhammad Faatih Yusron\n", delay2);
