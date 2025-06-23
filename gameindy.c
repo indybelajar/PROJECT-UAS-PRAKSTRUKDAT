@@ -25,7 +25,7 @@ typedef struct
 typedef struct Chapter
 {
     int chapterNumber;
-    char scene[500];
+    char sinopsis[1000];
     struct Chapter *next;
 } Chapter;
 
@@ -177,7 +177,7 @@ void showInventory()
     }
 }
 
-void addChapter(int chapterNumber, char *scene)
+void addChapter(int chapterNumber, const char *scene )
 {
     Chapter *newChap = (Chapter *)malloc(sizeof(Chapter));
     newChap->chapterNumber = chapterNumber;
