@@ -59,6 +59,7 @@ void playGraduationDay();
 
 void showChapterPoints();
 void sortAndShowChapterPoints(int sortByAffinity);
+void clearInventory();
 
 void clearInputBuffer()
 {
@@ -173,6 +174,18 @@ void showInventory()
         printf("- %s\n", temp->name);
         temp = temp->next;
     }
+}
+
+void clearInventory()
+{
+    Item *temp;
+    while (inventory != NULL)
+    {
+        temp = inventory;
+        inventory = inventory->next;
+        free(temp);
+    }
+    typewriterEffect("\n\n(Inventory dikosongkan)\n", delay);
 }
 
 void addChapter(int chapterNumber, char *scene)
@@ -778,6 +791,7 @@ void playGraduationDay()
         typewriterEffect("Kelulusan pun tiba, dan Thallah lulus tanpa mengetahui perasaanku yang sesungguhnya.\n", delay);
         typewriterEffect("Aku hanya bisa menatap punggungnya yang semakin menjauh, membawa serta sebagian hatiku.\n", delay);
         typewriterEffect("\n=== ENDING: Tidak Pernah Diungkapkan ===\n", delay);
+        clearInventory();
         return;
     }
 
@@ -801,6 +815,7 @@ void playGraduationDay()
             typewriterEffect("\nKamu tidak punya Surat cinta untuk diberikan...\n", delay);
             typewriterEffect("Akhirnya kamu hanya terdiam dan tidak menyatakan apa pun.\n", delay);
             typewriterEffect("=== ENDING: Tidak Pernah Diungkapkan ===\n", delay);
+            clearInventory();
             return;
         }
 
@@ -839,7 +854,9 @@ void playGraduationDay()
         {
             typewriterEffect("Kamu tidak punya Cokelat Perpisahan...\n", delay);
             typewriterEffect("Akhirnya kamu hanya tersenyum dan pergi tanpa mengucapkan apa-apa.\n", delay);
+            typewriterEffect("Mungkin ini adalah cara terbaik untuk mengakhiri semuanya, meski hatiku terasa hancur.\n", delay);
             typewriterEffect("=== ENDING: Tidak Pernah Diungkapkan ===\n", delay);
+            clearInventory();
             return;
         }
 
@@ -851,6 +868,7 @@ void playGraduationDay()
         typewriterEffect("(Narasi Rima): Aku menahan air mata dan tersenyum. Kadang yang tak terucap, lebih berarti dari yang dibicarakan.\n", delay);
         typewriterEffect("(Item digunakan: Coklat Perpisahan).\n", delay);
         typewriterEffect("\n=== ENDING: Kenangan Manis ===\n", delay);
+        clearInventory();
         return;
     }
     else
@@ -879,6 +897,7 @@ void playGraduationDay()
             typewriterEffect("Bunyi nada sambung terdengar... lalu tersambung.\n", delay);
             typewriterEffect("Thallah: \"Halo, Rima... apa kabar?...\"\n", delay);
             typewriterEffect("\n=== ENDING: Cinta yang Tertunda ===\n", delay);
+            clearInventory();
         }
         else
         {
@@ -886,6 +905,7 @@ void playGraduationDay()
             typewriterEffect("Thallah: \"Kamu selalu ada di saat aku butuh. Aku ingin mencobanya bersamamu.\"\n", delay);
             typewriterEffect("Di tengah riuhnya acara kelulusan, hanya kami yang merasa waktu berhenti.\n", delay);
             typewriterEffect("\n=== TRUE ENDING: Bersama ===\n", delay);
+            clearInventory();
         }
     }
     else
@@ -910,13 +930,18 @@ void playGraduationDay()
             typewriterEffect("Rima: \"Setidaknya... dia tahu.\"\n", delay);
 
             typewriterEffect("\n=== ENDING: Surat yang Tak Pernah Dibalas ===\n", delay);
+            clearInventory();
         }
         else if (choice == 2)
         {
             typewriterEffect("\n(Narasi Rima): Thallah menatapku pelan, lalu menggeleng dengan senyum sedih.\n", delay);
             typewriterEffect("Thallah: \"Aku minta maaf, Rima. Kamu gadis yang luar biasa, tapi... perasaanku belum ke arah itu.\"\n", delay);
             typewriterEffect("Aku menunduk, mencoba tegar. Tapi hatiku pecah perlahan.\n", delay);
+            typewriterEffect("Rima: \"Tidak apa-apa, Kak. Aku mengerti. Aku hanya ingin kamu tahu... aku peduli.\"\n", delay);
+            typewriterEffect("Thallah: \"Terima kasih, Rima. Kamu selalu bisa membuatku merasa lebih baik.\"\n", delay);
+            typewriterEffect("Kami berpisah dengan senyuman, tapi di dalam hatiku, ada rasa sakit yang tak tertahankan.\n", delay);
             typewriterEffect("\n=== BAD ENDING: Tidak Terbalas ===\n", delay);
+            clearInventory();
         }
     }
 }
