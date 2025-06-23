@@ -878,7 +878,7 @@ void playGraduationDay()
             typewriterEffect("\nBeberapa saat setelah membaca surat itu, ia mengambil ponselnya dan memanggil kontak Rima yang sudah lama tak ia panggil...\n", delay);
             typewriterEffect("Bunyi nada sambung terdengar... lalu tersambung.\n", delay);
             typewriterEffect("Thallah: \"Halo, Rima... apa kabar?...\"\n", delay);
-            typewriterEffect("\n=== ENDING SURAT CINTA: Dibaca Saat Kuliah ===\n", delay);
+            typewriterEffect("\n=== ENDING: Cinta yang Tertunda ===\n", delay);
         }
         else
         {
