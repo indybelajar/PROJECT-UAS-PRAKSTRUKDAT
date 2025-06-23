@@ -234,9 +234,27 @@ void jumpToChapter(int targetChapter)
 {
     Chapter *current = head;
     char fullText[600];
+
+    while (current != NULL)
+    {
+        if (current->chapterNumber == targetChapter)
+        {
+            currentChapter = current;
+            break;
+        }
+        current = current->next;
+    }
+
+    if (currentChapter == NULL)
+    {
+        printf("Chapter tidak ditemukan.\n");
+        return;
+    }
+
+    // Mulai dari chapter yang dituju, lanjutkan sampai habis
     while (currentChapter != NULL)
     {
-        loadStateFromPreviousChapter(currentChapter->chapterNumber); // <--- Tambahkan ini
+        loadStateFromPreviousChapter(currentChapter->chapterNumber);
 
         typewriterEffect("\n=================\n", delay2);
         snprintf(fullText, sizeof(fullText), "Chapter %d:\n%s\n", currentChapter->chapterNumber, currentChapter->scene);
@@ -268,48 +286,13 @@ void jumpToChapter(int targetChapter)
             break;
         case 8:
             playGraduationDay();
-            return;
+            break;
         default:
+            printf("Chapter belum tersedia.\n");
             break;
         }
 
-        saveChapterState(currentChapter->chapterNumber); // <--- Tambahkan ini
-        currentChapter = currentChapter->next;
-    }
-
-    if (currentChapter == NULL)
-    {
-        printf("Chapter tidak ditemukan.\n");
-        return;
-    }
-
-    while (currentChapter != NULL)
-    {
-        typewriterEffect("\n=================\n", delay2);
-        snprintf(fullText, sizeof(fullText), "Chapter %d:\n%s\n", currentChapter->chapterNumber, currentChapter->scene);
-        typewriterEffect(fullText, delay2);
-        typewriterEffect("=================\n", delay2);
-
-        switch (currentChapter->chapterNumber)
-        {
-        case 1:
-            playChapter1();
-            break;
-        case 2:
-            playChapter2();
-            break;
-        case 3:
-            playChapter3();
-            break;
-        case 5:
-            playChapter5();
-            break;
-        case 7:
-            playChapter7();
-            return;
-        default:
-            break;
-        }
+        saveChapterState(currentChapter->chapterNumber);
         currentChapter = currentChapter->next;
     }
 }
@@ -1045,17 +1028,26 @@ void sortAndShowChapterPoints(int sortByAffinity)
         indices[i] = i;
     }
 
-    // Bubble sort berdasarkan affinity atau effort
+    // Bubble sort berdasarkan delta (penambahan)
     for (int i = 1; i < 8 - 1; i++)
     {
         for (int j = i + 1; j < 8; j++)
         {
             int a = indices[i], b = indices[j];
 
-            int valA = sortByAffinity ? chapterStates[a].affinity : chapterStates[a].effort;
-            int valB = sortByAffinity ? chapterStates[b].affinity : chapterStates[b].effort;
+            int prevAffinityA = (a > 1 && chapterStates[a - 1].completed) ? chapterStates[a - 1].affinity : 0;
+            int prevEffortA = (a > 1 && chapterStates[a - 1].completed) ? chapterStates[a - 1].effort : 0;
+            int deltaA = sortByAffinity
+                             ? (chapterStates[a].affinity - prevAffinityA)
+                             : (chapterStates[a].effort - prevEffortA);
 
-            if (valA < valB)
+            int prevAffinityB = (b > 1 && chapterStates[b - 1].completed) ? chapterStates[b - 1].affinity : 0;
+            int prevEffortB = (b > 1 && chapterStates[b - 1].completed) ? chapterStates[b - 1].effort : 0;
+            int deltaB = sortByAffinity
+                             ? (chapterStates[b].affinity - prevAffinityB)
+                             : (chapterStates[b].effort - prevEffortB);
+
+            if (deltaA < deltaB)
             {
                 int temp = indices[i];
                 indices[i] = indices[j];
@@ -1064,16 +1056,29 @@ void sortAndShowChapterPoints(int sortByAffinity)
         }
     }
 
-    typewriterEffect("\n=== Rekap Tambahan Poin per Chapter ===\n", delay2);
-    typewriterEffect("| Chapter | +Affinity  | +Effort |\n", delay2);
-    typewriterEffect("|---------|------------|---------|\n", delay2);
+    // Tampilkan dengan efek typewriter
+    char buffer[200];
+    snprintf(buffer, sizeof(buffer), "\n=== Hasil Sorting Chapter Berdasarkan %s ===\n",
+             sortByAffinity ? "Affinity Δ" : "Effort Δ");
+    typewriterEffect(buffer, delay2);
+
+    typewriterEffect("| Chapter | +Affinity | +Effort |\n", delay2);
+    typewriterEffect("|---------|-----------|---------|\n", delay2);
 
     for (int i = 1; i < 8; i++)
     {
         int idx = indices[i];
         if (chapterStates[idx].completed)
         {
-            printf("|   %2d    |   %4d    |  %4d  |\n", idx, chapterStates[idx].affinity, chapterStates[idx].effort);
+            int prevAffinity = (idx > 1 && chapterStates[idx - 1].completed) ? chapterStates[idx - 1].affinity : 0;
+            int prevEffort = (idx > 1 && chapterStates[idx - 1].completed) ? chapterStates[idx - 1].effort : 0;
+
+            int deltaAffinity = chapterStates[idx].affinity - prevAffinity;
+            int deltaEffort = chapterStates[idx].effort - prevEffort;
+
+            snprintf(buffer, sizeof(buffer), "|   %2d    |   %+5d    |  %+5d  |\n",
+                     idx, deltaAffinity, deltaEffort);
+            typewriterEffect(buffer, delay2);
         }
     }
 }
