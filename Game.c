@@ -11,6 +11,7 @@ typedef struct Item
     struct Item *next;
 } Item;
 
+
 // Struct karakter
 typedef struct
 {
@@ -19,6 +20,7 @@ typedef struct
     int affinity;
     int effort;
 } Character;
+
 
 // Struct untuk chapter
 typedef struct Chapter
@@ -29,6 +31,7 @@ typedef struct Chapter
     struct Chapter *next;
 } Chapter;
 
+
 // Chapter state untuk menyimpan riwayat poin
 typedef struct
 {
@@ -37,7 +40,9 @@ typedef struct
     int completed; // 0 = belum, 1 = sudah
 } ChapterState;
 
+
 ChapterState chapterStates[8]; // 0 tidak digunakan, 1-7 untuk chapter 1-7
+
 
 // Variabel global
 Item *inventory = NULL;
@@ -52,6 +57,7 @@ int isPaused = 0;
 int delay = 5;
 int delay2 = 2;
 
+
 // Deklarasi awal fungsi chapter
 void playChapter1();
 void playChapter2();
@@ -62,11 +68,13 @@ void playChapter6();
 void playChapter7();
 void playGraduationDay();
 
+
 void showChapterPoints();
 void sortAndShowChapterPoints(int sortByAffinity);
 void clearInventory();
 void addChapterExtended(int chapterNumber, const char *title, const char *synopsis);
 void searchChapterByNumber(int number);
+
 
 // Menghapus atau mengosongkan buffer input dari data yang tidak diinginkan
 void clearInputBuffer()
@@ -76,6 +84,7 @@ void clearInputBuffer()
         ;
 }
 
+
 // Fungsi search chapter tambahan (Sinopsis tiap chapter)
 void addChapterExtended(int chapterNumber, const char *title, const char *synopsis)
 {
@@ -84,6 +93,7 @@ void addChapterExtended(int chapterNumber, const char *title, const char *synops
     strcpy(newChap->title, title);
     strcpy(newChap->synopsis, synopsis);
     newChap->next = NULL;
+
 
     if (head == NULL)
     {
@@ -139,10 +149,12 @@ void loadStateFromPreviousChapter(int chapterNumber)
     }
 }
 
+
 // Efek Typewiter
 void typewriterEffect(const char *text, int delay)
 {
     int skip = 0;
+
 
     for (int i = 0; text[i] != '\0'; i++)
     {
@@ -154,6 +166,7 @@ void typewriterEffect(const char *text, int delay)
                 skip = 1;
             }
         }
+
 
         if (skip)
         {
@@ -231,6 +244,7 @@ void addChapter(int chapterNumber, const char *scene)
     newChap->chapterNumber = chapterNumber;
     newChap->next = NULL;
 
+
     if (head == NULL)
     {
         head = newChap;
@@ -244,10 +258,12 @@ void addChapter(int chapterNumber, const char *scene)
     }
 }
 
+
 // Fungsi list karakter dalam cerita
 void listCharacters()
 {
     typewriterEffect("\n=== Daftar Karakter ===\n", delay2);
+
 
     Character characters[] = {
         senpai,
@@ -257,8 +273,10 @@ void listCharacters()
         friend4
     };
 
+
     int totalCharacters = sizeof(characters) / sizeof(characters[0]);
     char buffer[200];
+
 
     for (int i = 0; i < totalCharacters; i++)
     {
@@ -272,6 +290,7 @@ void listCharacters()
         typewriterEffect(buffer, delay2);
     }
 }
+
 
 // Fungsi Menu Utama
 int gameMenu()
@@ -300,11 +319,13 @@ int gameMenu()
     }
 }
 
+
 // Fungsi Untuk Berpindah Chapter
 void jumpToChapter(int targetChapter)
 {
     Chapter *current = head;
     char fullText[600];
+
 
     while (current != NULL)
     {
@@ -316,20 +337,28 @@ void jumpToChapter(int targetChapter)
         current = current->next;
     }
 
+
     if (currentChapter == NULL)
     {
         printf("Chapter tidak ditemukan.\n");
         return;
     }
 
+
     // Mulai dari chapter yang dituju, lanjutkan sampai habis
     while (currentChapter != NULL)
     {
         loadStateFromPreviousChapter(currentChapter->chapterNumber);
 
+
+        char fullText[512];  // pastikan buffer cukup
+
         typewriterEffect("\n=================\n", delay2);
-        snprintf(fullText, sizeof(fullText), "Chapter %d:\n%s\n", currentChapter->chapterNumber);
+
+        // tampilkan nomor dan judul chapter
+        snprintf(fullText, sizeof(fullText), "Chapter %d: %s\n", currentChapter->chapterNumber, currentChapter->title);
         typewriterEffect(fullText, delay2);
+
         typewriterEffect("=================\n", delay2);
 
         switch (currentChapter->chapterNumber)
@@ -357,16 +386,18 @@ void jumpToChapter(int targetChapter)
             break;
         case 8:
             playGraduationDay();
-            break;
+            return;
         default:
             printf("Chapter belum tersedia.\n");
             break;
         }
 
+
         saveChapterState(currentChapter->chapterNumber);
         currentChapter = currentChapter->next;
     }
 }
+
 
 // Fungsi Memainkan Chapter 1
 void playChapter1()
@@ -378,6 +409,7 @@ void playChapter1()
     typewriterEffect("Indy: \"Rima, kamu yakin mau nyamperin Kak Thallah?\"\n", delay);
     typewriterEffect("Kayla: \"Ayo semangat, Rima! Kami di sini support kamu!\n", delay);
 
+
     typewriterEffect("Rima: (Berjalan mendekat) \"Kak Thallah, butuh bantuan?\"\n", delay);
     typewriterEffect("\nApa yang akan kamu lakukan?\n", delay);
     printf("1. Tawarkan bantuan spesifik\n");
@@ -387,6 +419,7 @@ void playChapter1()
     scanf("%d", &choice);
     clearInputBuffer();
 
+
     if (choice == 0)
     {
         if (!gameMenu())
@@ -394,6 +427,7 @@ void playChapter1()
         playChapter1();
         return;
     }
+
 
     switch (choice)
     {
@@ -440,6 +474,7 @@ void playChapter1()
     typewriterEffect("(Narasi: Aku merasa seperti ada yang memperhatikan. Tapi kuabaikan, karena fokusku sekarang hanya satu—Thallah.)\n", delay);
 }
 
+
 // Fungsi Memainkan Chapter 2
 void playChapter2()
 {
@@ -448,6 +483,7 @@ void playChapter2()
     typewriterEffect("Sore ini, Rima dan Thallah sedang berada di ruang ekskul fotografi, memeriksa hasil jepretan dari acara sekolah minggu lalu. Suasana hening, hanya terdengar suara klik mouse. Thallah tiba-tiba menghela napas panjang.\n", delay);
     typewriterEffect("Thallah: (Menghela napas, melihat hasil jepretan) \"Kadang aku lelah, Rima. Banyak harapan di pundakku.\"\n", delay);
 
+
     typewriterEffect("\nApa yang akan kamu lakukan?\n", delay);
     printf("1. Beri dukungan penuh\n");
     printf("2. Beri saran praktis\n");
@@ -455,6 +491,7 @@ void playChapter2()
     printf("0. Menu\n> ");
     scanf("%d", &choice);
     clearInputBuffer();
+
 
     if (choice == 0)
     {
@@ -500,6 +537,7 @@ void playChapter2()
     }
 }
 
+
 // Fungsi Memainkan Chapter 3
 void playChapter3()
 {
@@ -522,6 +560,7 @@ void playChapter3()
     printf("0. Menu\n>");
     scanf("%d", &choice);
     clearInputBuffer();
+
 
     if (choice == 0)
     {
@@ -573,6 +612,7 @@ void playChapter3()
     }
 }
 
+
 // Fungsi Memainkan Chapter 4
 void playChapter4()
 {
@@ -585,6 +625,7 @@ void playChapter4()
     typewriterEffect("Boby sedang bermain gitar kecil sambil duduk bersama Rakhan di pojok ruangan, menyanyikan lagu mellow yang entah kenapa terasa menohok perasaanku.\n", delay);
     typewriterEffect("Thallah: (Mendekati meja Rima di kantin) \"Rima, kamu kenapa? Kelihatannya lesu sekali. Mau makan siang denganku dan teman-teman OSIS?\"\n", delay);
 
+
     typewriterEffect("\nApa yang akan kamu lakukan?\n", delay);
     printf("1. Tolak dengan alasan jujur\n");
     printf("2. Tolak dengan alasan umum\n");
@@ -593,6 +634,7 @@ void playChapter4()
     scanf("%d", &choice);
     clearInputBuffer();
 
+
     if (choice == 0)
     {
         if (!gameMenu())
@@ -600,6 +642,7 @@ void playChapter4()
         playChapter4();
         return;
     }
+
 
     switch (choice)
     {
@@ -639,6 +682,7 @@ void playChapter4()
     }
 }
 
+
 // Fungsi Memainkan Chapter 5
 void playChapter5()
 {
@@ -652,6 +696,7 @@ void playChapter5()
     typewriterEffect("Indy bahkan memberiku semangat lewat pesan: *'Hari ini kamu harus bersinar, Ri. Biar dia lihat siapa kamu sebenarnya.'*\n", delay);
     typewriterEffect("Aku menatap kaca. Ini aku, Rima. Dan aku akan memperjuangkan cintaku.\n", delay);
 
+
     typewriterEffect("\nApa yang akan kamu lakukan?\n", delay);
     printf("1. Dekati dengan perhatian/bantuan\n");
     printf("2. Dekati dengan ajakan khusus\n");
@@ -660,6 +705,7 @@ void playChapter5()
     scanf("%d", &choice);
     clearInputBuffer();
 
+
     if (choice == 0)
     {
         if (!gameMenu())
@@ -667,6 +713,7 @@ void playChapter5()
         playChapter5();
         return;
     }
+
 
     switch (choice)
     {
@@ -704,6 +751,7 @@ void playChapter5()
     }
 }
 
+
 // Fungsi Memainkan Chapter 6
 void playChapter6()
 {
@@ -720,6 +768,7 @@ void playChapter6()
     typewriterEffect("Thallah: \"Dan... dan dia juga satu kampus denganku! Dia di jurusan Sastra Indonesia!\"\n", delay);
     typewriterEffect("Aku melihat senyum itu. Senyum yang... bukan untukku.\n", delay);
 
+
     typewriterEffect("\nApa yang akan kamu lakukan?\n", delay);
     printf("1. Berikan selamat dengan tulus\n");
     printf("2. Ubah topik/alihkan perhatian\n");
@@ -728,6 +777,7 @@ void playChapter6()
     scanf("%d", &choice);
     clearInputBuffer();
 
+
     if (choice == 0)
     {
         if (!gameMenu())
@@ -735,6 +785,7 @@ void playChapter6()
         playChapter6();
         return;
     }
+
 
     switch (choice)
     {
@@ -773,6 +824,7 @@ void playChapter6()
     }
 }
 
+
 // Fungsi Memainkan Chapter 7
 void playChapter7()
 {
@@ -786,10 +838,12 @@ void playChapter7()
     typewriterEffect("Indy sempat menepuk pundakku di koridor, matanya seolah tahu isi hatiku.\n", delay);
     typewriterEffect("Kayla mengajak duduk sebentar di taman belakang, hanya untuk diam bersamaku, tanpa kata-kata.\n", delay);
 
+
     typewriterEffect("Suara gitar akustik Rakhan yang ia unggah di story malam ini menemani kesendirianku.\n", delay);
     typewriterEffect("Lagu sedih itu... pas sekali dengan suasana hatiku.\n", delay);
     typewriterEffect("Aku memandang langit-langit kamarku yang gelap. Malam ini adalah penentuan.\n", delay);
     typewriterEffect("Boby bahkan mengirim chat singkat tadi: 'Rima, apapun pilihanmu besok, pastikan kamu nggak nyesel ya.'\n", delay);
+
 
     typewriterEffect("\n(POV Thallah)\n", delay);
     typewriterEffect("Aku agak bingung. Tumben sekali Rima, si adik kelas yang selalu cerewet dan kocak itu, tidak lagi mendekatiku.\n", delay);
@@ -799,11 +853,13 @@ void playChapter7()
     typewriterEffect("tentang cowok yang aku suka? Aku jadi sedikit merindukan kehadirannya yang selalu ceria dan caranya membuatku tertawa lepas.\n", delay);
     typewriterEffect("Hari-hari terakhir di sekolah ini terasa lebih sepi tanpanya, dan entah kenapa, ada perasaan aneh yang mengganjal di dadaku. Ini seperti ada yang kurang.\n", delay);
 
+
     typewriterEffect("\n(Kembali ke POV Rima)\n", delay);
     typewriterEffect("Aku harus memutuskan. Haruskah aku menyatakan perasaanku sekarang?\n", delay);
     typewriterEffect("Di hari kelulusan besok, di tengah perpisahan dan euforia kelulusan?\n", delay);
     typewriterEffect("Atau aku harus menunggu lain kali, saat semuanya sudah lebih tenang, dan aku punya strategi yang lebih matang...\n", delay);
     typewriterEffect("mungkin setelah dia dan seniornya itu... ah, entahlah.\n", delay);
+
 
     typewriterEffect("\nMalam Sebelum Kelulusan: Pilihan Penentu\n", delay);
     printf("1. TEMBAK BESOK SAAT KELULUSAN\n");
@@ -812,6 +868,7 @@ void playChapter7()
     scanf("%d", &choice);
     clearInputBuffer();
 
+
     if (choice == 0)
     {
         if (!gameMenu())
@@ -819,6 +876,7 @@ void playChapter7()
         playChapter7();
         return;
     }
+
 
     switch (choice)
     {
@@ -855,6 +913,7 @@ void playChapter7()
     }
 }
 
+
 // Fungsi Memainkan Chapter Hari Kelulusan
 void playGraduationDay()
 {
@@ -867,6 +926,7 @@ void playGraduationDay()
     typewriterEffect("Rima: \"Kak Thallah,\" panggilku, suaraku sedikit tercekat.\n", delay);
     typewriterEffect("Thallah: (Menoleh, senyumnya sedikit memudar melihat ekspresi seriusku) \"Eh, Rima. Ada apa? Tumben serius begitu.\"\n", delay);
 
+
     typewriterEffect("\nApa yang ingin kamu lakukan?\n", delay);
     printf("1. Nyatakan perasaan dengan Surat cinta\n");
     printf("2. Ungkapkan langsung secara lisan\n");
@@ -874,6 +934,7 @@ void playGraduationDay()
     printf("0. Jangan nyatakan perasaan (diam)\n> ");
     scanf("%d", &choice);
     clearInputBuffer();
+
 
     if (choice == 0)
     {
@@ -886,6 +947,7 @@ void playGraduationDay()
         clearInventory();
         return;
     }
+
 
     if (choice == 1)
     {
@@ -902,6 +964,7 @@ void playGraduationDay()
             temp = temp->next;
         }
 
+
         if (!found)
         {
             typewriterEffect("\nKamu tidak punya Surat cinta untuk diberikan...\n", delay);
@@ -911,8 +974,10 @@ void playGraduationDay()
             return;
         }
 
+
         useItem("Surat cinta");
         senpai.affinity += 2;
+
 
         typewriterEffect("\nRima: \"Aku... aku mau ngomong sesuatu,\" kataku, suaraku sedikit bergetar.\n", delay);
         typewriterEffect("Aku mengeluarkan sebuah surat yang sudah kubuat semalaman, mencurahkan semua perasaanku di sana.\n", delay);
@@ -942,6 +1007,7 @@ void playGraduationDay()
             temp = temp->next;
         }
 
+
         if (!found)
         {
             typewriterEffect("Kamu tidak punya Cokelat Perpisahan...\n", delay);
@@ -952,7 +1018,9 @@ void playGraduationDay()
             return;
         }
 
+
         useItem("Cokelat Perpisahan");
+
 
         typewriterEffect("\nAku tidak mengatakan apa pun. Hanya tersenyum dan menyerahkan Cokelat Perpisahan padanya.\n", delay);
         typewriterEffect("Ia menerimanya dan tersenyum hangat, sedikit heran, tapi menghargainya.\n", delay);
@@ -969,6 +1037,7 @@ void playGraduationDay()
         playGraduationDay();
         return;
     }
+
 
     // Evaluasi akhir untuk pilihan 1 dan 2
     if (senpai.effort > 30 && senpai.affinity > 15)
@@ -1007,19 +1076,23 @@ void playGraduationDay()
             typewriterEffect("\nAku hanya tersenyum, lalu berbalik. Aku tidak tahu bagaimana reaksinya nanti.\n", delay);
             typewriterEffect("Tapi aku tahu, hatiku sudah lebih ringan karena sudah jujur.\n", delay);
 
+
             typewriterEffect("\n=== WAKTU BERLALU... ===\n", delay);
             typewriterEffect("Beberapa bulan kemudian...\n", delay);
             typewriterEffect("Di sebuah kamar kos yang senyap, Thallah membuka laci meja dan mengambil surat dari Rima.\n", delay);
             typewriterEffect("Ia memandangi amplop itu lama, lalu menghela napas... dan menyimpannya kembali tanpa membukanya.\n", delay);
             typewriterEffect("Thallah: \"Maaf, Rima... aku tidak bisa...\"\n", delay);
 
+
             typewriterEffect("(Narasi): Entah karena takut, bingung, atau tak ingin memberi harapan palsu,\n", delay);
             typewriterEffect("ia memilih untuk membiarkan surat itu tetap tersegel, diam di dalam laci, seperti perasaan Rima yang tak pernah terjawab.\n", delay);
+
 
             typewriterEffect("\nDi tempat lain, Rima duduk menatap layar ponsel.\n", delay);
             typewriterEffect("Tak ada notifikasi. Tak ada balasan. Tak ada panggilan. Hanya sepi.\n", delay);
             typewriterEffect("Namun ia tetap tersenyum kecil, menatap langit malam yang sama dengan Thallah di kejauhan.\n", delay);
             typewriterEffect("Rima: \"Setidaknya... dia tahu.\"\n", delay);
+
 
             typewriterEffect("\n=== ENDING: Surat yang Tak Pernah Dibalas ===\n", delay);
             clearInventory();
@@ -1038,6 +1111,7 @@ void playGraduationDay()
     }
 }
 
+
 // Fungsi untuk memulai permainan dari awal
 void playGameFromStart()
 {
@@ -1045,13 +1119,16 @@ void playGameFromStart()
     jumpToChapter(1);
 }
 
+
 int wait()
 {
     char input[10];
     fgets(input, sizeof(input), stdin);
 
+
     // Menghapus newline '\n' dari input
     input[strcspn(input, "\n")] = 0;
+
 
     if (strcmp(input, "1") == 0)
     {
@@ -1059,6 +1136,7 @@ int wait()
     }
     return 0; // Lanjut
 }
+
 
 // Fungsi untuk menampilkan prolog
 // Ini akan dipanggil sebelum memulai chapter pertama
@@ -1074,11 +1152,13 @@ void showProlog()
     if (wait())
         return;
 
+
     typewriterEffect("Seorang kakak kelas dengan name tag \"Thallah\". Rambutnya klimis, tertata rapi, dan matanya berbinar\n", delay);
     typewriterEffect("di balik lensa kamera DSLR yang ia gunakan untuk memfoto jalannya MPLS. Senyumnya... ah, senyumnya\n", delay);
     typewriterEffect("seolah menerangi seluruh lapangan, bahkan di bawah terik matahari yang menyengat.\n", delay);
     if (wait())
         return;
+
 
     typewriterEffect("Ia berdiri di sekitar lapangan sembari memfoto temannya yang sedang menjelaskan jadwal hari ini.\n", delay);
     typewriterEffect("Setelah selesai menjelaskan, ia mendatangi temannya dan mengajaknya bicara. Suaranya tenang tapi tegas,\n", delay);
@@ -1087,6 +1167,7 @@ void showProlog()
     typewriterEffect("hanya sebatas sapaan singkat dan anggukan kepala.\n", delay);
     if (wait())
         return;
+
 
     // Hari ke-2 MPLS
     typewriterEffect("(Latar: Lapangan SMA, MPLS Hari 2)\n", delay);
@@ -1097,6 +1178,7 @@ void showProlog()
     if (wait())
         return;
 
+
     typewriterEffect("Kemudian, ia menawari para murid baru untuk mencoba kamera yang ia pegang. Aku yang melihat kesempatan emas ini,\n", delay);
     typewriterEffect("tanpa ragu langsung mengangkat tangan. Ia menghampiriku perlahan, dan dalam bayanganku, ia seperti seorang\n", delay);
     typewriterEffect("kesatria yang menghampiri putri. Dia menjelaskan cara menggunakan kamera dengan lembut, dengan sabar membimbing\n", delay);
@@ -1105,6 +1187,7 @@ void showProlog()
     if (wait())
         return;
 
+
     typewriterEffect("Sejak momen itu, di benakku, ini bukan hanya sekadar MPLS. Ini adalah misi PDKT, misi untuk\n", delay);
     typewriterEffect("mendekati Thallah! Aku mulai berusaha mencari tahu lebih banyak tentangnya. Hal pertama yang kutahu,\n", delay);
     typewriterEffect("Thallah adalah anggota OSIS dan ketua Ekskul Fotografi. Tanpa pikir panjang, aku memutuskan untuk berniat\n", delay);
@@ -1112,11 +1195,13 @@ void showProlog()
     if (wait())
         return;
 
+
     typewriterEffect("Tentu saja, alasan utamaku masuk ke kedua organisasi itu adalah untuk selalu berada di dekatnya. Supaya aku\n", delay);
     typewriterEffect("bisa menanyakan hal-hal sepele, atau sekadar menawarkan bantuan kecil. Singkat cerita, dengan sedikit\n", delay);
     typewriterEffect("keberuntungan dan usaha keras, aku berhasil masuk ke dalam dua organisasi tersebut!\n", delay);
     if (wait())
         return;
+
 
     typewriterEffect("Sedikit yang Rima tahu, Thallah ternyata siswa Kelas 12, yang berarti akan lulus sebentar lagi.\n", delay);
     typewriterEffect("Aku menjalani hari-hari sibukku sebagai anggota OSIS dan Ekskul Fotografi bersama Thallah selama semester satu.\n", delay);
@@ -1125,6 +1210,7 @@ void showProlog()
     if (wait())
         return;
 
+
     typewriterEffect("Namun, setelah masuk ke Semester 2, Thallah mulai fokus penuh untuk mempersiapkan diri mengikuti berbagai\n", delay);
     typewriterEffect("ujian akhir dan UTBK. Proses PDKT-ku kembali dari nol. Aku berusaha keras untuk tidak mengganggunya.\n", delay);
     typewriterEffect("Aku tidak lagi sering mengajaknya bicara, tidak lagi menawarkan bantuan sepele. Aku tahu ia butuh fokus,\n", delay);
@@ -1132,12 +1218,14 @@ void showProlog()
     if (wait())
         return;
 
+
     typewriterEffect("Sampai pada saat di mana seluruh ujian itu sudah selesai dan perjalanannya menuju kelulusan semakin dekat.\n", delay);
     typewriterEffect("Hanya tersisa 7 hari lagi sampai kelulusan Thallah. Aku bertekad untuk kembali mendekatinya, tidak peduli\n", delay);
     typewriterEffect("seberapa singkat waktu yang tersisa. Ini adalah kesempatanku.\n", delay);
     if (wait())
         return;
 }
+
 
 // Fungsi untuk menampilkan menu utama
 void showMenu()
@@ -1154,6 +1242,7 @@ void showMenu()
         printf("6. Keluar game\n> ");
         scanf("%d", &pilihan);
         clearInputBuffer();
+
 
         switch (pilihan)
         {
@@ -1175,6 +1264,7 @@ void showMenu()
             printf("3. Kembali\n> ");
             scanf("%d", &pilihan);
             clearInputBuffer();
+
 
             if (pilihan == 1)
             {
@@ -1218,6 +1308,7 @@ void showChapterPoints()
     typewriterEffect("| Chapter | +Affinity  | +Effort |\n", delay2);
     typewriterEffect("|---------|------------|---------|\n", delay2);
 
+
     for (int i = 1; i < 8; i++)
     {
         if (chapterStates[i].completed)
@@ -1225,8 +1316,10 @@ void showChapterPoints()
             int prevAffinity = (i > 1 && chapterStates[i - 1].completed) ? chapterStates[i - 1].affinity : 0;
             int prevEffort = (i > 1 && chapterStates[i - 1].completed) ? chapterStates[i - 1].effort : 0;
 
+
             int deltaAffinity = chapterStates[i].affinity - prevAffinity;
             int deltaEffort = chapterStates[i].effort - prevEffort;
+
 
             printf("|   %2d    |    %+4d    |   %+4d  |\n", i, deltaAffinity, deltaEffort);
         }
@@ -1237,6 +1330,7 @@ void showChapterPoints()
     }
 }
 
+
 void sortAndShowChapterPoints(int sortByAffinity)
 {
     int indices[8];
@@ -1245,6 +1339,7 @@ void sortAndShowChapterPoints(int sortByAffinity)
         indices[i] = i;
     }
 
+
     // Bubble sort berdasarkan delta (penambahan)
     for (int i = 1; i < 8 - 1; i++)
     {
@@ -1252,17 +1347,20 @@ void sortAndShowChapterPoints(int sortByAffinity)
         {
             int a = indices[i], b = indices[j];
 
+
             int prevAffinityA = (a > 1 && chapterStates[a - 1].completed) ? chapterStates[a - 1].affinity : 0;
             int prevEffortA = (a > 1 && chapterStates[a - 1].completed) ? chapterStates[a - 1].effort : 0;
             int deltaA = sortByAffinity
                              ? (chapterStates[a].affinity - prevAffinityA)
                              : (chapterStates[a].effort - prevEffortA);
 
+
             int prevAffinityB = (b > 1 && chapterStates[b - 1].completed) ? chapterStates[b - 1].affinity : 0;
             int prevEffortB = (b > 1 && chapterStates[b - 1].completed) ? chapterStates[b - 1].effort : 0;
             int deltaB = sortByAffinity
                              ? (chapterStates[b].affinity - prevAffinityB)
                              : (chapterStates[b].effort - prevEffortB);
+
 
             if (deltaA < deltaB)
             {
@@ -1273,14 +1371,17 @@ void sortAndShowChapterPoints(int sortByAffinity)
         }
     }
 
+
     // Tampilkan dengan efek typewriter
     char buffer[200];
     snprintf(buffer, sizeof(buffer), "\n=== Hasil Sorting Chapter Berdasarkan %s ===\n",
              sortByAffinity ? "Affinity Δ" : "Effort Δ");
     typewriterEffect(buffer, delay2);
 
+
     typewriterEffect("| Chapter | +Affinity | +Effort |\n", delay2);
     typewriterEffect("|---------|-----------|---------|\n", delay2);
+
 
     for (int i = 1; i < 8; i++)
     {
@@ -1290,8 +1391,10 @@ void sortAndShowChapterPoints(int sortByAffinity)
             int prevAffinity = (idx > 1 && chapterStates[idx - 1].completed) ? chapterStates[idx - 1].affinity : 0;
             int prevEffort = (idx > 1 && chapterStates[idx - 1].completed) ? chapterStates[idx - 1].effort : 0;
 
+
             int deltaAffinity = chapterStates[idx].affinity - prevAffinity;
             int deltaEffort = chapterStates[idx].effort - prevEffort;
+
 
             snprintf(buffer, sizeof(buffer), "|   %2d    |   %+5d    |  %+5d  |\n",
                      idx, deltaAffinity, deltaEffort);
@@ -1300,37 +1403,48 @@ void sortAndShowChapterPoints(int sortByAffinity)
     }
 }
 
+
 // Fungsi Program Utama
-int main() 
+int main()
 {
     addChapterExtended(1, "Pendekatan Awal",
         "Hari pertama dari tujuh hari penting dimulai. Rima, sang protagonis, melihat kesempatan untuk mendekati kakak kelas pujaannya, Thallah, yang sedang kelelahan mengurus berkas OSIS. Ditemani dua sahabatnya, Rima memberanikan diri menawarkan bantuan. "
         "Pilihanmu akan memengaruhi Affinity dan Effort.");
 
+
     addChapterExtended(2, "Saling Terbuka",
         "Hari kedua membawa Rima dan Thallah ke ruang ekstrakurikuler fotografi. Saat meninjau hasil jepretan, suasana sunyi berubah menjadi momen emosional ketika Thallah mulai membuka diri soal tekanan ekspektasi.");
+
 
     addChapterExtended(3, "Pukulan Tak Terduga",
         "Rima dan Thallah mencari buku di perpustakaan. Tiba-tiba Thallah mengungkapkan bahwa ia menyukai seseorang — bukan Rima. Pemain memilih bagaimana Rima merespons: marah, sedih, atau tetap mendengarkan.");
 
+
     addChapterExtended(4, "Dunia yang Kelabu",
         "Keesokan harinya, Rima larut dalam kesedihan. Saat Thallah mengajaknya makan siang, Rima harus memilih: menerima atau menolak. Ini menguji kekuatan hatinya untuk tetap dekat meski sakit.");
+
 
     addChapterExtended(5, "Bangkit dan Bertekad",
         "Setelah malam penuh perenungan, Rima bangkit dengan tekad baru. Ia mencoba mendekatkan diri kembali pada Thallah—lewat perhatian, ajakan, atau menunjukkan kelebihan. Tapi risikonya tetap ada.");
 
+
     addChapterExtended(6, "Pukulan Kedua",
         "Di hari pengumuman UTBK, Thallah memberi kabar gembira: ia diterima bersama orang yang ia sukai. Pemain memilih: beri selamat, alihkan topik, atau pergi. Ini uji keikhlasan Rima.");
 
+
     addChapterExtended(7, "Dilema dan Melodi Sedih",
         "Hari terakhir sebelum kelulusan. Hubungan Rima dan Thallah renggang. Di tengah kesunyian dan lagu sedih, Rima bertanya pada diri sendiri: Haruskah aku menyatakan perasaanku sekarang?");
-    
+   
+    addChapterExtended(8, "Hari Kelulusan",
+    "Hari terakhir! Saatnya menentukan apakah Rima akan menyatakan perasaan atau tidak.");
+        
     typewriterEffect("(Info: Tekan ENTER kapan saja untuk skip tulisan lambat.)\n", delay2);
     typewriterEffect("(Tekan ENTER untuk mulai...)\n\n", delay2);
     typewriterEffect("=========================", delay2);
     typewriterEffect("\nGame Otome: A Week Before Graduate I Try to Ask My Senpai to be My Boyfriend\n", delay2);
     typewriterEffect("Creator:\n- Indy Agustin\n- Grace Larisma Jaya\n- Rakha Atha Muhammad\n- Muhammad Mumtaaz Raihaan Thaariq\n- Muhammad Faatih Yusron\n", delay2);
     typewriterEffect("=========================", delay2);
+
 
     addChapter(1, "Pendekatan Awal");
     addChapter(2, "Saling Terbuka");
