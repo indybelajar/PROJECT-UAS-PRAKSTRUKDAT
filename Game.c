@@ -57,6 +57,9 @@ void playChapter6();
 void playChapter7();
 void playGraduationDay();
 
+void showChapterPoints();
+void sortAndShowChapterPoints(int sortByAffinity);
+
 void clearInputBuffer()
 {
     int c;
@@ -953,8 +956,9 @@ void showMenu()
         typewriterEffect("\n=== Menu Utama ===\n", delay);
         typewriterEffect("1. Mulai permainan\n", delay);
         typewriterEffect("2. Lompat ke chapter tertentu\n", delay);
-        typewriterEffect("3. List character\n", delay);
-        typewriterEffect("4. Keluar game\n> ", delay);
+        typewriterEffect("3. Lihat rekap poin tiap chapter\n", delay);
+        typewriterEffect("4. List character\n", delay);
+        typewriterEffect("5. Keluar game\n> ", delay);
         scanf("%d", &pilihan);
         clearInputBuffer();
 
@@ -971,21 +975,113 @@ void showMenu()
             jumpToChapter(targetChapter);
             break;
         case 3:
-            listCharacters();
+            showChapterPoints();
+            printf("\nUrutkan berdasarkan:\n");
+            printf("1. Affinity Tertinggi\n");
+            printf("2. Effort Tertinggi\n");
+            printf("3. Kembali\n> ");
+            scanf("%d", &pilihan);
+            clearInputBuffer();
+
+            if (pilihan == 1)
+            {
+                sortAndShowChapterPoints(1);
+            }
+            else if (pilihan == 2)
+            {
+                sortAndShowChapterPoints(0);
+            }
+            else if (pilihan == 3)
+            {
+                break; // kembali ke menu utama
+            }
+            else
+            {
+                printf("Pilihan tidak valid.\n");
+            }
             break;
         case 4:
+            listCharacters();
+            break;
+        case 5:
             typewriterEffect("Terima kasih telah bermain!\n", delay2);
             break;
         default:
             typewriterEffect("Pilihan tidak valid.\n", delay2);
         }
-    } while (pilihan != 4);
+    } while (pilihan != 5);
+}
+
+void showChapterPoints()
+{
+    typewriterEffect("\n=== Rekap Tambahan Poin per Chapter ===\n", delay2);
+    typewriterEffect("| Chapter | +Affinity  | +Effort |\n", delay2);
+    typewriterEffect("|---------|------------|---------|\n", delay2);
+
+    for (int i = 1; i < 8; i++)
+    {
+        if (chapterStates[i].completed)
+        {
+            int prevAffinity = (i > 1 && chapterStates[i - 1].completed) ? chapterStates[i - 1].affinity : 0;
+            int prevEffort = (i > 1 && chapterStates[i - 1].completed) ? chapterStates[i - 1].effort : 0;
+
+            int deltaAffinity = chapterStates[i].affinity - prevAffinity;
+            int deltaEffort = chapterStates[i].effort - prevEffort;
+
+            printf("|   %2d    |    %+4d    |   %+4d  |\n", i, deltaAffinity, deltaEffort);
+        }
+        else
+        {
+            printf("|   %2d    |     --     |    --   |\n", i);
+        }
+    }
+}
+
+void sortAndShowChapterPoints(int sortByAffinity)
+{
+    int indices[8];
+    for (int i = 1; i < 8; i++)
+    {
+        indices[i] = i;
+    }
+
+    // Bubble sort berdasarkan affinity atau effort
+    for (int i = 1; i < 8 - 1; i++)
+    {
+        for (int j = i + 1; j < 8; j++)
+        {
+            int a = indices[i], b = indices[j];
+
+            int valA = sortByAffinity ? chapterStates[a].affinity : chapterStates[a].effort;
+            int valB = sortByAffinity ? chapterStates[b].affinity : chapterStates[b].effort;
+
+            if (valA < valB)
+            {
+                int temp = indices[i];
+                indices[i] = indices[j];
+                indices[j] = temp;
+            }
+        }
+    }
+
+    typewriterEffect("\n=== Rekap Tambahan Poin per Chapter ===\n", delay2);
+    typewriterEffect("| Chapter | +Affinity  | +Effort |\n", delay2);
+    typewriterEffect("|---------|------------|---------|\n", delay2);
+
+    for (int i = 1; i < 8; i++)
+    {
+        int idx = indices[i];
+        if (chapterStates[idx].completed)
+        {
+            printf("|   %2d    |   %4d    |  %4d  |\n", idx, chapterStates[idx].affinity, chapterStates[idx].effort);
+        }
+    }
 }
 
 int main()
 {
     typewriterEffect("(Info: Tekan ENTER kapan saja untuk skip tulisan lambat.)\n", delay2);
-    typewriterEffect("Tekan ENTER untuk mulai...)\n\n", delay2);
+    typewriterEffect("(Tekan ENTER untuk mulai...)\n\n", delay2);
     typewriterEffect("=========================", delay2);
     typewriterEffect("\nGame Otome: A Week Before Graduate I Try to Ask My Senpai to be My Boyfriend\n", delay2);
     typewriterEffect("Creator:\n- Indy Agustin\n- Grace Larisma Jaya\n- Rakha Atha Muhammad\n- Muhammad Mumtaaz Raihaan Thaariq\n- Muhammad Faatih Yusron\n", delay2);
