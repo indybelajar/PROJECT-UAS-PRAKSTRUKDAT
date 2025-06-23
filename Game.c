@@ -448,12 +448,15 @@ void playChapter3()
 {
     int choice;
     typewriterEffect("\nHari 3:\n", delay);
-    typewriterEffect("Rima dan Thallah sedang mencari referensi buku untuk proyek fotografi terakhir kami. Suasana perpustakaan yang sepi membuat kami bisa mengobrol lebih santai. Tiba-tiba, Thallah menghentikan langkahnya, menatapku dengan ekspresi ragu.\n", delay);
-    typewriterEffect("Thallah:\" Rima, aku mau cerita sesuatu padamu...\"\n", delay);
-    typewriterEffect("Rima: \"(Dalam hati: Deg-degan, semoga ini yang kuharapkan... Jantungku berdetak tak karuan.\")\n", delay);
+    typewriterEffect("Rima dan Thallah sedang mencari referensi buku untuk proyek fotografi terakhir kami. Suasana perpustakaan yang sepi membuat kami bisa mengobrol lebih santai.\n", delay);
+    typewriterEffect("Di meja sebelah, Indy dan Luna sedang mengerjakan laporan ospek, sesekali mencuri pandang ke arah kami sambil senyum-senyum kecil.\n", delay);
+    typewriterEffect("Jauh di ujung rak, Boby dan Rakhan terlihat sedang memilih buku musik. Suara tawa kecil Rakhan sempat membuatku menoleh.\n", delay);
+    typewriterEffect("Tiba-tiba, Thallah menghentikan langkahnya, menatapku dengan ekspresi ragu.\n", delay);
+    typewriterEffect("Thallah: \"Rima, aku mau cerita sesuatu padamu...\"\n", delay);
+    typewriterEffect("Rima: \"(Dalam hati: Deg-degan, semoga ini yang kuharapkan... Jantungku berdetak tak karuan.)\"\n", delay);
     typewriterEffect("Thallah: (Menghela napas) \"Aku... aku sebenarnya suka sama seseorang. Tapi aku bingung harus bagaimana. Aku tidak tahu apakah dia juga suka padaku atau tidak.\"\n", delay);
     typewriterEffect("Dunia seolah berhenti berputar. Kata-katanya menghantamku telak, lebih keras dari bentakan mana pun.\n", delay);
-    typewriterEffect("Thallah: \"Dia itu teman SMP-ku dulu. Kami sudah dekat sebulan ini sebelum kelulusan SMA. Gimana ya Ma?\n", delay);
+    typewriterEffect("Thallah: \"Dia itu teman SMP-ku dulu. Kami sudah dekat sebulan ini sebelum kelulusan SMA. Gimana ya Ma?\"\n", delay);
     // Pilihan untuk Rima
     typewriterEffect("\nApa yang akan kamu lakukan?\n", delay);
     printf("1. Marah\n");
