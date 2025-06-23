@@ -40,7 +40,11 @@ ChapterState chapterStates[8]; // 0 tidak digunakan, 1-7 untuk chapter 1-7
 
 // Variabel global
 Item *inventory = NULL;
-Character senpai = {"Thallah", "12 Oktober", 0};
+Character senpai = {"Thallah", "12 Oktober", 0, 0};
+Character friend1 = {"Indy", "3 Maret", 0, 0};
+Character friend2 = {"Luna", "20 April", 0, 0};
+Character friend3 = {"Boby", "3 Juni", 0, 0};
+Character friend4 = {"Rakhan", "30 Juli", 0, 0};
 Chapter *head = NULL;
 Chapter *currentChapter = NULL;
 int isPaused = 0;
@@ -315,8 +319,11 @@ void playChapter1()
     int choice;
     typewriterEffect("\nHari 1:\n", delay);
     typewriterEffect("Hari pertama dari sisa 7 hari ini dimulai. Aku melihat Thallah sedang membereskan berkas-berkas sendirian di aula OSIS. Dia tampak sedikit lelah. Ini kesempatanku!\n", delay);
-    typewriterEffect("Rima: (Berjalan mendekat) \"Kak Thallah, butuh bantuan?\"\n", delay);
+    typewriterEffect("Sementara itu, aku datang bersama Indy dan Luna, dua sahabatku yang selalu mendukungku dalam diam. Kami bertiga memang dekat sejak awal masuk sekolah", delay);
+    typewriterEffect("Indy: \"Rima, kamu yakin mau nyamperin Kak Thallah?\"\n", delay);
+    typewriterEffect("Luna: \"Ayo semangat, Rima! Kami di sini support kamu!\n", delay);
 
+    typewriterEffect("Rima: (Berjalan mendekat) \"Kak Thallah, butuh bantuan?\"\n", delay);
     typewriterEffect("\nApa yang akan kamu lakukan?\n", delay);
     printf("1. Tawarkan bantuan spesifik\n");
     printf("2. Tawarkan minuman\n");
@@ -340,28 +347,30 @@ void playChapter1()
         senpai.effort += 5;
         typewriterEffect("\nRima: \"Melihat berkas sebanyak itu pasti bikin pusing. Mau aku bantu rapikan atau kumpulkan sesuai abjad?\"\n", delay);
         typewriterEffect("Thallah: (Tersenyum lega) \"Eh, Rima. Kebetulan sekali. Bisa tolong kumpulkan berkas ini sesuai abjad? Aku sudah mau tumbang rasanya.\"\n", delay);
-        typewriterEffect("Aku mengerjakan tugas itu dengan semangat, sesekali melirik Thallah yang tampak kelelahan.\n", delay);
-        typewriterEffect("Kami mulai mengobrol ringan, membicarakan persiapan kelulusannya, tentang ujian-ujiannya yang melelahkan.\n", delay);
-        typewriterEffect("Aku berusaha menciptakan suasana nyaman, melontarkan candaan kecil yang membuatnya tersenyum.\n", delay);
-        typewriterEffect("Rasanya, jarak di antara kami mulai memudar lagi.\n", delay);
+        typewriterEffect("(Indy dan Luna saling pandang dan ikut membantu dengan cepat.)\n", delay);
+        typewriterEffect("Indy: \"Kami bantu juga ya, Kak. Lebih cepat lebih baik!\"\n", delay);
+        typewriterEffect("Luna: \"Asal jangan disuruh ngitung, aku lemah di matematika!\" (tertawa ringan)\n", delay);
+        typewriterEffect("Kami mulai mengobrol ringan, membicarakan persiapan kelulusan Thallah.\n", delay);
         typewriterEffect("(Poin Effort Rima: +5, Poin Kedekatan Thallah: +3)\n", delay);
         break;
     case 2:
         senpai.affinity += 2;
         senpai.effort += 4;
         typewriterEffect("\nRima: \"Kak Thallah kelihatan capek. Mau aku belikan minum? Ada teh dingin atau kopi panas?\"\n", delay);
-        typewriterEffect("Thallah: (Tersenyum tipis) \"Wah, makasih banyak, Rima. Teh dingin kedengarannya enak. Aku cuma perlu rapikan berkas ini sedikit lagi.\"\n", delay);
-        typewriterEffect("Setelah membawakannya teh dingin, aku menawarkan diri untuk membantunya merapikan berkas.\n", delay);
-        typewriterEffect("Kami mengobrol santai tentang kegiatannya setelah ujian, dan aku sesekali melontarkan candaan ringan yang membuatnya tersenyum.\n", delay);
+        typewriterEffect("Thallah: (Tersenyum tipis) \"Wah, makasih banyak, Rima. Teh dingin kedengarannya enak.\"\n", delay);
+        typewriterEffect("Indy langsung berlari ke kantin.\n", delay);
+        typewriterEffect("Indy: \"Gue yang beliin! Kalian fokus di sini aja.\"\n", delay);
+        typewriterEffect("Sementara itu Luna dan aku membantu membereskan berkas.\n", delay);
         typewriterEffect("(Poin Effort Rima: +4, Poin Kedekatan Thallah: +2)\n", delay);
         break;
     case 3:
         senpai.affinity += 1;
         senpai.effort += 2;
         typewriterEffect("\nRima: \"Kak Thallah sibuk banget ya?\"\n", delay);
-        typewriterEffect("Thallah: (Menghela nafas) \"Lumayan, ma. Berkas-berkas akhir tahun ini banyak sekali.\"\n", delay);
-        typewriterEffect("Aku hanya berdiri di sana sebentar, merasa canggung untuk menawarkan bantuan lebih jauh.\n", delay);
-        typewriterEffect("Thallah kembali sibuk dengan berkasnya. Aku memutuskan untuk membantu membereskan beberapa map yang tercecer di meja.\n", delay);
+        typewriterEffect("Thallah: (Menghela nafas) \"Lumayan, Ma. Berkas-berkas akhir tahun ini banyak sekali.\"\n", delay);
+        typewriterEffect("Luna menepuk bahuku pelan.\n", delay);
+        typewriterEffect("Luna: \"Ayo bantuin, jangan bengong aja.\"\n", delay);
+        typewriterEffect("Aku ikut membantu walau tak banyak bicara.\n", delay);
         typewriterEffect("(Poin Effort Rima: +2, Poin Kedekatan Thallah: +1)\n", delay);
         break;
     default:
@@ -369,6 +378,11 @@ void playChapter1()
         playChapter1();
         return;
     }
+    typewriterEffect("\n(Bersamaan dengan itu, Boby dan temannya Rakhan memperhatikan dari kejauhan.)\n", delay);
+    typewriterEffect("Boby: \"Eh, lihat tuh, Rakhan. Si Rima lagi nyamperin Thallah lagi.\"\n", delay);
+    typewriterEffect("Rakhan: \"Dia gigih juga ya. Tapi lu bukan pernah deket juga sama Rima, By?\"\n", delay);
+    typewriterEffect("Boby: (tersenyum miring) \"Heh, itu cerita lama. Tapi... siapa tahu dia masih ingat gue.\"\n", delay);
+    typewriterEffect("(Narasi: Aku merasa seperti ada yang memperhatikan. Tapi kuabaikan, karena fokusku sekarang hanya satu—Thallah.)\n", delay);
 }
 
 void playChapter2()
@@ -411,7 +425,7 @@ void playChapter2()
         typewriterEffect("\nRima: \"Mungkin Kakak perlu istirahat sebentar? Atau coba cerita apa yang membuat Kakak merasa begitu?\"\n", delay);
         typewriterEffect("Thallah: (Mendesah) \"Ya, mungkin aku memang butuh istirahat. Aku... aku cuma merasa beban terlalu banyak.\"\n", delay);
         typewriterEffect("Thallah tidak langsung menceritakan detail, tapi dia mengisyaratkan tentang tekanan ujian dan harapan keluarga. Aku mencoba menghiburnya dengan bercerita tentang pengalamanku sendiri.\n", delay);
-        typewriterEffect("Rima: \"Aku juga kadang meraSsa begitu, Kak. Tapi percayalah, Kakak tidak sendiri.\"\n", delay);
+        typewriterEffect("Rima: \"Aku juga kadang merasa begitu, Kak. Tapi percayalah, Kakak tidak sendiri.\"\n", delay);
         typewriterEffect("Thallah: \"Terima kasih, Rima. Kamu baik sekali.\"\n", delay);
         typewriterEffect("(Poin Effort Rima: +5, Poin Kedekatan Thallah: +3)\n", delay);
         break;
